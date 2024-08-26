@@ -4,54 +4,102 @@ using UnityEngine;
 
 public class RoomSpawner : MonoBehaviour
 {
-    public int openSide;
+    public int openSide; // 1 -> bottom, 2 -> top, 3 -> left, 4 -> right
     private RoomTemplates templates;
-    private int rand;
     private bool spawned = false;
+
+    public LayerMask roomLayerMask; // Layer mask para verificar si una habitación ya existe
+    public float overlapCheckRadius = 0.1f; // Radio para chequear solapamiento
 
     void Start()
     {
         templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
-        Invoke("Spawn", 0.1f);
+        StartCoroutine(Spawn());
     }
 
-    void Spawn()
+    IEnumerator Spawn()
     {
-        if (spawned == false)
+        yield return new WaitForSeconds(0.2f); // Espera para asegurarse de que otros SpawnPoints hayan hecho sus verificaciones
+
+        if (!spawned)
         {
-            if (openSide == 1)
+            // Verificar si ya hay una habitación en esta posición
+            Collider[] overlappingRooms = Physics.OverlapSphere(transform.position, overlapCheckRadius, roomLayerMask);
+            if (overlappingRooms.Length == 0)
             {
-                rand = Random.Range(0, templates.bottomRooms.Length);
-                Instantiate(templates.bottomRooms[rand], transform.position, templates.bottomRooms[rand].transform.rotation);
-            }
+                GameObject roomToSpawn = null;
+                int attempts = 0;
+                bool foundValidRoom = false;
 
-            else if (openSide == 2)
-            {
-                rand = Random.Range(0, templates.topRooms.Length);
-                Instantiate(templates.topRooms[rand], transform.position, templates.topRooms[rand].transform.rotation);
-            }
-            else if (openSide == 3)
-            {
-                rand = Random.Range(0, templates.leftRooms.Length);
-                Instantiate(templates.leftRooms[rand], transform.position, templates.leftRooms[rand].transform.rotation);
-            }
+                while (attempts < 10 && !foundValidRoom)
+                {
+                    roomToSpawn = GetRandomRoomByOppositeSide(openSide);
 
-            if (openSide == 4)
-            {
-                rand = Random.Range(0, templates.rightRooms.Length);
-                Instantiate(templates.rightRooms[rand], transform.position, templates.rightRooms[rand].transform.rotation);
-            }
+                    if (roomToSpawn != null && IsValidRoom(roomToSpawn))
+                    {
+                        foundValidRoom = true;
+                        Instantiate(roomToSpawn, transform.position, roomToSpawn.transform.rotation);
+                        spawned = true;
+                    }
+                    attempts++;
+                }
 
-            spawned = true;
+                // Si no se encuentra una habitación válida en 10 intentos, marca como spawneado para evitar loops infinitos
+                if (!foundValidRoom)
+                {
+                    spawned = true;
+                }
+            }
+            else
+            {
+                // Si hay solapamiento, no spawnear la habitación
+                spawned = true;
+            }
         }
     }
 
+    private GameObject GetRandomRoomByOppositeSide(int side)
+    {
+        switch (side)
+        {
+            case 1: // bottom, necesita una puerta en la parte superior de la nueva habitación
+                if (templates.topRooms.Length == 0) return null;
+                return templates.topRooms[Random.Range(0, templates.topRooms.Length)];
+            case 2: // top, necesita una puerta en la parte inferior de la nueva habitación
+                if (templates.bottomRooms.Length == 0) return null;
+                return templates.bottomRooms[Random.Range(0, templates.bottomRooms.Length)];
+            case 3: // left, necesita una puerta en la parte derecha de la nueva habitación
+                if (templates.rightRooms.Length == 0) return null;
+                return templates.rightRooms[Random.Range(0, templates.rightRooms.Length)];
+            case 4: // right, necesita una puerta en la parte izquierda de la nueva habitación
+                if (templates.leftRooms.Length == 0) return null;
+                return templates.leftRooms[Random.Range(0, templates.leftRooms.Length)];
+            default:
+                return null;
+        }
+    }
+
+    private bool IsValidRoom(GameObject room)
+    {
+        // si la habitación tiene una puerta en el lado opuesto, es válida
+        return true;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("SpawnPoint"))
         {
-            Destroy(gameObject);
+            if (!other.GetComponent<RoomSpawner>().spawned && !spawned)
+            {
+                Destroy(other.gameObject);
+                Destroy(gameObject);
+            }
+            else if (!spawned)
+            {
+                Destroy(gameObject);
+            }
+
+            spawned = true;
         }
     }
 }
