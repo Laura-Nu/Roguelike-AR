@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\01_Scripts\RoomTemplates.cs" />
+    <Compile Include="Assets\01_Scripts\Player.cs" />
     <Compile Include="Assets\01_Scripts\RoomSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -754,6 +755,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="SimpleInput.Editor.csproj">
+      <Project>{64EED368-8E21-1558-7849-7CC293333754}</Project>
+      <Name>SimpleInput.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SimpleInput.Runtime.csproj">
+      <Project>{F3464EA6-1C52-121C-D2B0-BFE434D22EA9}</Project>
+      <Name>SimpleInput.Runtime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
