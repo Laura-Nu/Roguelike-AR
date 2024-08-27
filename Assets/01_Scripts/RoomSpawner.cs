@@ -8,9 +8,6 @@ public class RoomSpawner : MonoBehaviour
     private RoomTemplates templates;
     private bool spawned = false;
 
-    public LayerMask roomLayerMask; // Layer mask para verificar si una habitación ya existe
-    public float overlapCheckRadius = 0.1f; // Radio para chequear solapamiento
-
     void Start()
     {
         templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
@@ -23,36 +20,26 @@ public class RoomSpawner : MonoBehaviour
 
         if (!spawned)
         {
-            // Verificar si ya hay una habitación en esta posición
-            Collider[] overlappingRooms = Physics.OverlapSphere(transform.position, overlapCheckRadius, roomLayerMask);
-            if (overlappingRooms.Length == 0)
+            GameObject roomToSpawn = null;
+            int attempts = 0;
+            bool foundValidRoom = false;
+
+            while (attempts < 10 && !foundValidRoom)
             {
-                GameObject roomToSpawn = null;
-                int attempts = 0;
-                bool foundValidRoom = false;
+                roomToSpawn = GetRandomRoomByOppositeSide(openSide);
 
-                while (attempts < 10 && !foundValidRoom)
+                if (roomToSpawn != null && IsValidRoom(roomToSpawn))
                 {
-                    roomToSpawn = GetRandomRoomByOppositeSide(openSide);
-
-                    if (roomToSpawn != null && IsValidRoom(roomToSpawn))
-                    {
-                        foundValidRoom = true;
-                        Instantiate(roomToSpawn, transform.position, roomToSpawn.transform.rotation);
-                        spawned = true;
-                    }
-                    attempts++;
-                }
-
-                // Si no se encuentra una habitación válida en 10 intentos, marca como spawneado para evitar loops infinitos
-                if (!foundValidRoom)
-                {
+                    foundValidRoom = true;
+                    Instantiate(roomToSpawn, transform.position, roomToSpawn.transform.rotation);
                     spawned = true;
                 }
+                attempts++;
             }
-            else
+
+            // Si no se encuentra una habitación válida en 10 intentos, marca como spawneado para evitar loops infinitos
+            if (!foundValidRoom)
             {
-                // Si hay solapamiento, no spawnear la habitación
                 spawned = true;
             }
         }
