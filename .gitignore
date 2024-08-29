@@ -80,3 +80,5 @@ Assets/Editor/Vuforia/arcore-unity-sdk/
 # Ignore Vuforia's temp and build folders (depending on your setup)
 Vuforia/logs/
 Vuforia/temp/
+/Library
+Logs/shadercompiler-UnityShaderCompiler.exe0.log
