@@ -28,10 +28,18 @@ public class RoomSpawner : MonoBehaviour
             {
                 roomToSpawn = GetRandomRoomByOppositeSide(openSide);
 
-                if (roomToSpawn != null && IsValidRoom(roomToSpawn))
+                if (roomToSpawn != null)
                 {
                     foundValidRoom = true;
-                    Instantiate(roomToSpawn, transform.position, roomToSpawn.transform.rotation);
+
+                    // Generar halls para cada puerta
+                    GenerateHall(openSide);
+
+                    // Ajustar la posición de la nueva habitación para que quede al otro lado del hall
+                    Vector3 newPosition = AdjustRoomPosition(transform.position, openSide);
+
+                    // Instanciar la habitación en la posición correcta después del hall
+                    Instantiate(roomToSpawn, newPosition, roomToSpawn.transform.rotation);
                     spawned = true;
                 }
                 attempts++;
@@ -43,6 +51,54 @@ public class RoomSpawner : MonoBehaviour
                 spawned = true;
             }
         }
+    }
+
+
+    private void GenerateHall(int side)
+    {
+        Vector3 hallPosition = transform.position;
+        Quaternion hallRotation = Quaternion.identity;
+
+        switch (side)
+        {
+            case 1: // bottom
+                hallRotation = Quaternion.Euler(0, 90, 0);
+                break;
+            case 2: // top
+                hallRotation = Quaternion.Euler(0, 90, 0);
+                break;
+            case 3: // left
+                hallRotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case 4: // right
+                hallRotation = Quaternion.Euler(0, 0, 0);
+                break;
+        }
+
+        Instantiate(templates.hall, hallPosition, hallRotation);
+    }
+
+    private Vector3 AdjustRoomPosition(Vector3 originalPosition, int side)
+    {
+        Vector3 adjustedPosition = originalPosition;
+
+        switch (side)
+        {
+            case 1: // bottom, mover la nueva habitación hacia abajo
+                adjustedPosition += new Vector3(0, 0, -10f);
+                break;
+            case 2: // top, mover la nueva habitación hacia arriba
+                adjustedPosition += new Vector3(0, 0, 10f);
+                break;
+            case 3: // left, mover la nueva habitación hacia la izquierda
+                adjustedPosition += new Vector3(-10f, 0, 0);
+                break;
+            case 4: // right, mover la nueva habitación hacia la derecha
+                adjustedPosition += new Vector3(10f, 0, 0);
+                break;
+        }
+
+        return adjustedPosition;
     }
 
     private GameObject GetRandomRoomByOppositeSide(int side)
@@ -64,12 +120,6 @@ public class RoomSpawner : MonoBehaviour
             default:
                 return null;
         }
-    }
-
-    private bool IsValidRoom(GameObject room)
-    {
-        // si la habitación tiene una puerta en el lado opuesto, es válida
-        return true;
     }
 
     private void OnTriggerEnter(Collider other)

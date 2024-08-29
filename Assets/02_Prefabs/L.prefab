@@ -1687,6 +1687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSide: 3
+  hallPrefab: {fileID: 4883441651825205184, guid: 2cab3ae7f830f1547848ed72d640cae9, type: 3}
 --- !u!65 &7900418223503087568
 BoxCollider:
   m_ObjectHideFlags: 0
