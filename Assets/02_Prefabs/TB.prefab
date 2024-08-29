@@ -1895,7 +1895,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSide: 2
-  hallPrefab: {fileID: 4883441651825205184, guid: 2cab3ae7f830f1547848ed72d640cae9, type: 3}
 --- !u!65 &8855379258822869348
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2411,7 +2410,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSide: 1
-  hallPrefab: {fileID: 4883441651825205184, guid: 2cab3ae7f830f1547848ed72d640cae9, type: 3}
 --- !u!65 &5792587486602799222
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2786,7 +2784,7 @@ GameObject:
   - component: {fileID: 6058920554189499276}
   m_Layer: 0
   m_Name: TB
-  m_TagString: Untagged
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

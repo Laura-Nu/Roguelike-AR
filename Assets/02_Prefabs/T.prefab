@@ -1796,7 +1796,7 @@ GameObject:
   - component: {fileID: 1854731495778672558}
   m_Layer: 0
   m_Name: T
-  m_TagString: Untagged
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3505,7 +3505,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSide: 2
-  hallPrefab: {fileID: 4883441651825205184, guid: 2cab3ae7f830f1547848ed72d640cae9, type: 3}
 --- !u!65 &2428758047534469046
 BoxCollider:
   m_ObjectHideFlags: 0
