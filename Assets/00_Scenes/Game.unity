@@ -2882,7 +2882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  life: 50
+  life: 3
   rb: {fileID: 1516124822}
 --- !u!1 &1560791022
 GameObject:
