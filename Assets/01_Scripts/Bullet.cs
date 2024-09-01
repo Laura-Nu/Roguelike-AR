@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 50f;
+    public float speed = 20f;
     public float timeToDestroy = 4f;
     public float damage = 1f;
     public bool playerBullet = false;  // Diferenciar entre bala de jugador y de enemigo
@@ -45,9 +45,9 @@ public class Bullet : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        else if (collision.gameObject.CompareTag("Fin"))
+        else if (collision.gameObject.CompareTag("Room") || collision.gameObject.CompareTag("Hall"))
         {
-            Debug.Log("Bala colisionó con 'Fin'");
+            Debug.Log("Bala colisionó con room");
             Destroy(gameObject);
         }
     }
