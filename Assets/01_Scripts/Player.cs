@@ -26,13 +26,13 @@ public class Player : MonoBehaviour
     public GameObject bulletPrefab;
 
     [Header("UI")]
-    //public TextMeshPro CoinsText;
+    public TextMeshProUGUI CoinsText;
     public Image lifeBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        //CoinsText.text = ""+coinsCount;
+        CoinsText.text = ""+coinsCount;
         lifeBar.fillAmount = life / maxLife;
     }
 
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
-        Attacks();
+        Dash();
     }
 
     void Movement()
@@ -56,51 +56,48 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Attacks()
+    public void MainAttack()
     {
-        if (isDashing)
+        Debug.Log("Fire 1 - Main Attack executed");
+    }
+
+    public void ShootAttack()
+    {
+        Debug.Log("fire 2 - Shoot executed");
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+
+    public void StompAttack()
+    {
+        Debug.Log("Fire 3 - Stomp executed");
+        if (life > stompCost)
         {
-            Dash();
+            life -= stompCost;
+            lifeBar.fillAmount = life / maxLife;
+            //Codigo stomp
         }
-        else
-        {
-            if (SimpleInput.GetButtonDown("Fire1"))
-            {
-                Debug.Log("Fire 1 - Main Attack executed");
-            }
-            else if (SimpleInput.GetButtonDown("Fire2"))
-            {
-                Debug.Log("fire 2 - Shoot executed");
-                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            }
-            else if (SimpleInput.GetButtonDown("Fire3"))
-            {
-                Debug.Log("Fire 3 - Stomp executed");
-                if (life > stompCost)
-                {
-                    life -= stompCost;
-                    lifeBar.fillAmount = life / maxLife;
-                    //Codigo stomp
-                }
-            }
-            else if (SimpleInput.GetButtonDown("Jump"))
-            {
-                Debug.Log("Dash executed");
-                isDashing = true;
-                dashTimeLeft = dashDuration;
-            }
-        }
+    }
+
+
+    public void TriggerDash()
+    {
+        Debug.Log("Dash executed");
+        isDashing = true;
+        dashTimeLeft = dashDuration;
     }
 
     void Dash()
     {
-        dashTimeLeft -= Time.deltaTime;
-        Vector3 bodyForward = body.forward;
-        bodyForward.y = 0;
-        bodyForward.Normalize();
-        transform.Translate(bodyForward * dashSpeed * Time.deltaTime, Space.World);
-        if (dashTimeLeft <= 0)
-            isDashing = false;
+        if (isDashing)
+        {
+            dashTimeLeft -= Time.deltaTime;
+            Vector3 bodyForward = body.forward;
+            bodyForward.y = 0;
+            bodyForward.Normalize();
+            transform.Translate(bodyForward * dashSpeed * Time.deltaTime, Space.World);
+            if (dashTimeLeft <= 0)
+                isDashing = false;
+        }
     }
 
     public void TakeDamage(float damage)
