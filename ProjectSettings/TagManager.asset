@@ -8,6 +8,7 @@ TagManager:
   - Rooms
   - Room
   - Activador
+  - Enemy
   layers:
   - Default
   - TransparentFX

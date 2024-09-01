@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -29,5 +30,14 @@ public class Player : MonoBehaviour
         float z = SimpleInput.GetAxis("Vertical");
 
         rb.velocity = new Vector3(x * speed, 0, z * speed);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        life -= damage;
+        if (life <= 0)
+        {
+            SceneManager.LoadScene("Game");  // Reinicia la escena cuando la vida llega a 0
+        }
     }
 }
