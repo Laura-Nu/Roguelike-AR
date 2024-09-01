@@ -61,7 +61,7 @@
     <Compile Include="Assets\01_Scripts\Room.cs" />
     <Compile Include="Assets\01_Scripts\RoomTemplates.cs" />
     <Compile Include="Assets\01_Scripts\Player.cs" />
-    <Compile Include="Assets\01_Scripts\Spawner\Spawner.cs" />
+    <Compile Include="Assets\01_Scripts\ActivadorSpawner.cs" />
     <Compile Include="Assets\01_Scripts\RoomSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
