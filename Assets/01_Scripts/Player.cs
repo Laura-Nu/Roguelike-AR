@@ -171,7 +171,20 @@ public class Player : MonoBehaviour
             Vector3 bodyForward = body.forward;
             bodyForward.y = 0;
             bodyForward.Normalize();
-            transform.Translate(bodyForward * dashSpeed * Time.deltaTime, Space.World);
+            Vector3 dashPosition = transform.position + bodyForward * dashSpeed * Time.deltaTime;
+
+            // Verificar colisiones usando Raycast
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, bodyForward, out hit, dashSpeed * Time.deltaTime))
+            {
+                if (hit.collider.CompareTag("Room"))
+                {
+                    isDashing = false; // Detener el dash si hay una colisión
+                    return;
+                }
+            }
+
+            rb.MovePosition(dashPosition);
             if (dashTimeLeft <= 0)
                 isDashing = false;
         }
