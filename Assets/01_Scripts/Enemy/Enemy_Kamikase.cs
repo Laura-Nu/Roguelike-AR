@@ -47,7 +47,7 @@ public class Enemy_Kamikase : MonoBehaviour
 
     void MoveInZ()
     {
-        transform.position += new Vector3(0, 0, -currentSpeed * Time.deltaTime);
+        transform.position += new Vector3(0, 0, currentSpeed * Time.deltaTime);
     }
 
     void OnCollisionEnter(Collision collision)
