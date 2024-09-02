@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 20f;
+    public float speed = 7f;
     public float timeToDestroy = 4f;
     public float damage = 1f;
     public bool playerBullet = false;  // Diferenciar entre bala de jugador y de enemigo

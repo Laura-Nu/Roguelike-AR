@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 50f;  // Velocidad base
+    public float speed = 5f;  // Velocidad base
     public float life = 2f;
     public float timeToDestroy = 10f;
     public float damage = 1f;
@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        speed = Random.Range(30f, 150f);
+        speed = Random.Range(3f, 6f);
         if (Random.Range(0, 2) == 0)
         {
             canShoot = true;
@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Shoot();
-        transform.Translate(-Vector3.forward * speed * Time.deltaTime);
+        //transform.Translate(-Vector3.forward * speed * Time.deltaTime);
     }
 
     void Shoot()

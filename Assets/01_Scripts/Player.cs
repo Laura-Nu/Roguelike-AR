@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -12,18 +13,30 @@ public class Player : MonoBehaviour
     public float speed = 5f;
     public float life = 50f;
     public float maxLife = 50f;
+    public float attackDamage = 1f;
     public float dashSpeed = 20f;
     public float dashDuration = 0.15f;
-    public float stompCost = 10f;
+    public float stompLifeCost = 10f;
     public int coinsCount = 0;
-    float dashTimeLeft = 0f;
+    public float stompForce = 20f;
+    public float stompRadius = 5f;
+    public float mainAttackDuration = 0.5f;
+    public Vector3 mainAttackOffset = new Vector3(0, 0, 1f); // Desplazamiento hacia adelante
+    public float knifeAttackDistance = 1f;
+    public float knifeAttackDuration = 0.5f;
+    public Vector3 knifeAttackDirection = Vector3.forward;
+    Vector3 initialLocalPosition;
     bool isDashing = false;
+    float dashTimeLeft = 0f;
+    bool isMainAttacking = false;
 
     [Header("Referencias")]
     public Rigidbody rb;
     public Transform body;
     public Transform firePoint;
     public GameObject bulletPrefab;
+    public Transform knife;
+    public CapsuleCollider knifeCollider;
 
     [Header("UI")]
     public TextMeshProUGUI CoinsText;
@@ -34,6 +47,8 @@ public class Player : MonoBehaviour
     {
         CoinsText.text = ""+coinsCount;
         lifeBar.fillAmount = life / maxLife;
+        initialLocalPosition = knife.localPosition;
+        knifeCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -59,6 +74,42 @@ public class Player : MonoBehaviour
     public void MainAttack()
     {
         Debug.Log("Fire 1 - Main Attack executed");
+        StartCoroutine(KnifeAttack());
+    }
+
+    IEnumerator KnifeAttack()
+    {
+        // Fijamos la posición inicial en cada ataque
+        knife.localPosition = initialLocalPosition;
+
+        float elapsedTime = 0f;
+        Vector3 startPosition = knife.localPosition;
+        Vector3 endPosition = startPosition + knifeAttackDirection.normalized * knifeAttackDistance;
+
+        // Fase de avance
+        while (elapsedTime < knifeAttackDuration / 2)
+        {
+            knife.localPosition = Vector3.Lerp(startPosition, endPosition, (elapsedTime / (knifeAttackDuration / 2)));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        knife.localPosition = endPosition;
+        knifeCollider.enabled = true;
+
+        // Espera un pequeño intervalo de tiempo antes de volver
+        yield return new WaitForSeconds(0.1f);
+
+        elapsedTime = 0f;
+
+        // Fase de regreso
+        while (elapsedTime < knifeAttackDuration / 2)
+        {
+            knife.localPosition = Vector3.Lerp(endPosition, startPosition, (elapsedTime / (knifeAttackDuration / 2)));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        knife.localPosition = startPosition;
+        knifeCollider.enabled = false;
     }
 
     public void ShootAttack()
@@ -70,12 +121,42 @@ public class Player : MonoBehaviour
     public void StompAttack()
     {
         Debug.Log("Fire 3 - Stomp executed");
-        if (life > stompCost)
+        if (life > stompLifeCost)
         {
-            life -= stompCost;
+            life -= stompLifeCost;
             lifeBar.fillAmount = life / maxLife;
-            //Codigo stomp
+            
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, stompRadius);
+
+            foreach (Collider hitCollider in hitColliders)
+            {
+                // Verificar si el collider pertenece a un enemigo
+                if (hitCollider.CompareTag("Enemy"))
+                {
+                    // Aplicar empuje al enemigo
+                    Rigidbody enemyRigidbody = hitCollider.GetComponent<Rigidbody>();
+                    if (enemyRigidbody != null)
+                    {
+                        Vector3 pushDirection = (hitCollider.transform.position - transform.position).normalized;
+                        enemyRigidbody.AddForce(pushDirection * stompForce, ForceMode.Impulse);
+                    }
+
+                    // Hacer daño al enemigo
+                    Enemy enemy = hitCollider.GetComponent<Enemy>();
+                    if (enemy != null)
+                    {
+                        enemy.TakeDamage(attackDamage);
+                    }
+                }
+            }
         }
+    }
+
+    // Visualización del radio de ataque en la escena
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, stompRadius);
     }
 
 
