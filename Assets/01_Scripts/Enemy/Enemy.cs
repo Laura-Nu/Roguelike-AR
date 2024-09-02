@@ -6,7 +6,6 @@ public class Enemy : MonoBehaviour
 {
     public float speed = 5f;  // Velocidad base
     public float life = 2f;
-    public float timeToDestroy = 10f;
     public float damage = 1f;
     public float timeBtwShoot = 2f; // Aumentado para disparar más lentamente
     private float timer = 0f;
@@ -21,7 +20,6 @@ public class Enemy : MonoBehaviour
         {
             canShoot = true;
         }
-        Destroy(gameObject, timeToDestroy);
     }
 
     void Update()
@@ -49,13 +47,8 @@ public class Enemy : MonoBehaviour
         life -= damage;
         if (life <= 0)
         {
-            Die();
+            Destroy(gameObject);
         }
-    }
-
-    void Die()
-    {
-        Destroy(gameObject);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -68,6 +61,10 @@ public class Enemy : MonoBehaviour
                 p.TakeDamage(damage);
             }
             Destroy(gameObject);
+        }
+        else if (collision.gameObject.CompareTag("Knife"))
+        {
+            TakeDamage(1f); //Cuando el enemigo se choca con el cuchillo, el enemigo recibe daño
         }
     }
 }

@@ -10,6 +10,7 @@ TagManager:
   - Activador
   - Enemy
   - Hall
+  - Knife
   layers:
   - Default
   - TransparentFX

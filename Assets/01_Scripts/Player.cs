@@ -73,7 +73,6 @@ public class Player : MonoBehaviour
 
     public void MainAttack()
     {
-        Debug.Log("Fire 1 - Main Attack executed");
         StartCoroutine(KnifeAttack());
     }
 
@@ -114,13 +113,11 @@ public class Player : MonoBehaviour
 
     public void ShootAttack()
     {
-        Debug.Log("fire 2 - Shoot executed");
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 
     public void StompAttack()
     {
-        Debug.Log("Fire 3 - Stomp executed");
         if (life > stompLifeCost)
         {
             life -= stompLifeCost;
@@ -162,7 +159,6 @@ public class Player : MonoBehaviour
 
     public void TriggerDash()
     {
-        Debug.Log("Dash executed");
         isDashing = true;
         dashTimeLeft = dashDuration;
     }
