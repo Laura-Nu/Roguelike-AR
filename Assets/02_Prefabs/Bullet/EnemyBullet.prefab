@@ -51,7 +51,7 @@ MonoBehaviour:
   speed: 2
   timeToDestroy: 5
   damage: 1
-  playerBullet: 0
+  playerBullet: 1
 --- !u!33 &888842939354185006
 MeshFilter:
   m_ObjectHideFlags: 0
