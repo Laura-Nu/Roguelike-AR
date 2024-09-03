@@ -30,17 +30,20 @@ public class RoomSpawner : MonoBehaviour
 
                 if (roomToSpawn != null)
                 {
-                    foundValidRoom = true;
-
-                    // Generar halls para cada puerta
-                    GenerateHall(openSide);
-
                     // Ajustar la posición de la nueva habitación para que quede al otro lado del hall
                     Vector3 newPosition = AdjustRoomPosition(transform.position, openSide);
 
-                    // Instanciar la habitación en la posición correcta después del hall
-                    Instantiate(roomToSpawn, newPosition, roomToSpawn.transform.rotation);
-                    spawned = true;
+                    // Verificar si la nueva posición está libre
+                    if (IsPositionFree(newPosition))
+                    {
+                        foundValidRoom = true;
+                        // Generar halls para cada puerta
+                        GenerateHall(openSide);
+
+                        // Instanciar la habitación en la posición correcta después del hall
+                        Instantiate(roomToSpawn, newPosition, roomToSpawn.transform.rotation);
+                        spawned = true;
+                    }
                 }
                 attempts++;
             }
@@ -53,6 +56,18 @@ public class RoomSpawner : MonoBehaviour
         }
     }
 
+    private bool IsPositionFree(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapBox(position, new Vector3(5, 5, 5)); // Ajusta el tamaño según la escala de tus habitaciones
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag("Room"))
+            {
+                return false; // Hay una habitación en esta posición
+            }
+        }
+        return true; // La posición está libre
+    }
 
     private void GenerateHall(int side)
     {

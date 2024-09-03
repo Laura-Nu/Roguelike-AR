@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        Destroy(gameObject, timeToDestroy);  // Destruir la bala después de un tiempo
+        Destroy(gameObject, timeToDestroy);  // Destruir la bala despuï¿½s de un tiempo
     }
 
     // Update is called once per frame
@@ -23,11 +23,11 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("Colisión detectada con: " + collision.gameObject.name);
+        Debug.Log("Colisiï¿½n detectada con: " + collision.gameObject.name);
 
         if (playerBullet && collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Bala del jugador colisionó con el enemigo");
+            Debug.Log("Bala del jugador colisionï¿½ con el enemigo");
             Enemy e = collision.gameObject.GetComponent<Enemy>();
             if (e != null)
             {
@@ -37,17 +37,17 @@ public class Bullet : MonoBehaviour
         }
         else if (!playerBullet && collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Bala del enemigo colisionó con el jugador");
+            Debug.Log("Bala del enemigo colisionï¿½ con el jugador");
             Player p = collision.gameObject.GetComponent<Player>();
             if (p != null)
             {
                 p.TakeDamage(2f);  // Se quitan 2 unidades de vida al Player
             }
-            Destroy(gameObject);  // Se destruye la bala después de la colisión con el Player
+            Destroy(gameObject);  // Se destruye la bala despuï¿½s de la colisiï¿½n con el Player
         }
         else if (collision.gameObject.CompareTag("Room") || collision.gameObject.CompareTag("Hall"))
         {
-            Debug.Log("Bala colisionó con room");
+            Debug.Log("Bala colisionï¿½ con room");
             Destroy(gameObject);
         }
     }
