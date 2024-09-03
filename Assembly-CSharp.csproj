@@ -62,9 +62,13 @@
     <Compile Include="Assets\01_Scripts\RoomTemplates.cs" />
     <Compile Include="Assets\01_Scripts\Player.cs" />
     <Compile Include="Assets\01_Scripts\Enemy\Enemy_Kamikase.cs" />
+    <Compile Include="Assets\01_Scripts\Shop.cs" />
     <Compile Include="Assets\01_Scripts\Enemy\Enemy_Sniper.cs" />
     <Compile Include="Assets\01_Scripts\Enemy\Enemy.cs" />
+    <Compile Include="Assets\01_Scripts\ItemUI.cs" />
     <Compile Include="Assets\01_Scripts\Bullet.cs" />
+    <Compile Include="Assets\01_Scripts\ItemSO.cs" />
+    <Compile Include="Assets\01_Scripts\InventoryManager.cs" />
     <Compile Include="Assets\01_Scripts\ActivadorSpawner.cs" />
     <Compile Include="Assets\01_Scripts\RoomSpawner.cs" />
   </ItemGroup>
