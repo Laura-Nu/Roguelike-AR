@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     public float knifeAttackDuration = 0.5f;
     public Vector3 knifeAttackDirection = Vector3.forward;
     Vector3 initialLocalPosition;
+    bool isShopOpen = false;
+    bool isInventoryOpen = false;
     bool isDashing = false;
     float dashTimeLeft = 0f;
     bool isMainAttacking = false;
@@ -37,6 +39,8 @@ public class Player : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform knife;
     public CapsuleCollider knifeCollider;
+    public Image inventory;
+    public Image shop;
 
     [Header("UI")]
     public TextMeshProUGUI CoinsText;
@@ -73,7 +77,6 @@ public class Player : MonoBehaviour
 
     public void MainAttack()
     {
-        Debug.Log("Fire 1 - Main Attack executed");
         StartCoroutine(KnifeAttack());
     }
 
@@ -114,13 +117,11 @@ public class Player : MonoBehaviour
 
     public void ShootAttack()
     {
-        Debug.Log("fire 2 - Shoot executed");
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 
     public void StompAttack()
     {
-        Debug.Log("Fire 3 - Stomp executed");
         if (life > stompLifeCost)
         {
             life -= stompLifeCost;
@@ -162,7 +163,6 @@ public class Player : MonoBehaviour
 
     public void TriggerDash()
     {
-        Debug.Log("Dash executed");
         isDashing = true;
         dashTimeLeft = dashDuration;
     }
@@ -175,9 +175,50 @@ public class Player : MonoBehaviour
             Vector3 bodyForward = body.forward;
             bodyForward.y = 0;
             bodyForward.Normalize();
-            transform.Translate(bodyForward * dashSpeed * Time.deltaTime, Space.World);
+            Vector3 dashPosition = transform.position + bodyForward * dashSpeed * Time.deltaTime;
+
+            // Verificar colisiones usando Raycast
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, bodyForward, out hit, dashSpeed * Time.deltaTime))
+            {
+                if (hit.collider.CompareTag("Room"))
+                {
+                    isDashing = false; // Detener el dash si hay una colisión
+                    return;
+                }
+            }
+
+            rb.MovePosition(dashPosition);
             if (dashTimeLeft <= 0)
                 isDashing = false;
+        }
+    }
+
+    public void OpenCloseInventory()
+    {
+        if (isInventoryOpen)//cerrar
+        {
+            inventory.gameObject.SetActive(false);
+            isInventoryOpen = false;
+        }
+        else if(!isShopOpen)//abrir
+        {
+            inventory.gameObject.SetActive(true);
+            isInventoryOpen = true;
+        }
+    }
+
+    public void OpenCloseShop()
+    {
+        if (isShopOpen)//cerrar
+        {
+            shop.gameObject.SetActive(false);
+            isShopOpen = false;
+        }
+        else if(!isInventoryOpen)//abrir
+        {
+            shop.gameObject.SetActive(true);
+            isShopOpen = true;
         }
     }
 
