@@ -86,7 +86,7 @@ MonoBehaviour:
   fireRate: 0.3
   shootingSound: {fileID: 0}
   maxHealth: 4
-  moveSpeed: 5
+  moveSpeed: 3
   rotationSpeed: 5
   collisionDamage: 3
 --- !u!33 &5474580361071847272

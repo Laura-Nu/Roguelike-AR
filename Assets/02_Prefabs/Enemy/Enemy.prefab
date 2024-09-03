@@ -82,7 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   life: 2
-  timeToDestroy: 10
+  timeToDestroy: 20
   damage: 1
   timeBtwShoot: 2
   firePoint: {fileID: 82100792558951793}

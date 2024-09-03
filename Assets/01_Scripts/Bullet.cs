@@ -19,12 +19,12 @@ public class Bullet : MonoBehaviour
     {
         // Movimiento hacia adelante en el espacio 3D
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
-
     }
 
     void OnTriggerEnter(Collider collision)
     {
         Debug.Log("Colisión detectada con: " + collision.gameObject.name);
+
         if (playerBullet && collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Bala del jugador colisionó con el enemigo");
@@ -41,9 +41,9 @@ public class Bullet : MonoBehaviour
             Player p = collision.gameObject.GetComponent<Player>();
             if (p != null)
             {
-                p.TakeDamage(damage);
+                p.TakeDamage(2f);  // Se quitan 2 unidades de vida al Player
             }
-            Destroy(gameObject);
+            Destroy(gameObject);  // Se destruye la bala después de la colisión con el Player
         }
         else if (collision.gameObject.CompareTag("Room") || collision.gameObject.CompareTag("Hall"))
         {
@@ -51,5 +51,4 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 }
