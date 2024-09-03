@@ -58,7 +58,7 @@ public class RoomSpawner : MonoBehaviour
 
     private bool IsPositionFree(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapBox(position, new Vector3(5, 5, 5)); // Ajusta el tamaño según la escala de tus habitaciones
+        Collider[] colliders = Physics.OverlapBox(position, new Vector3(9, 9, 9)); // Ajusta el tamaño según la escala de tus habitaciones
         foreach (var collider in colliders)
         {
             if (collider.CompareTag("Room"))
@@ -100,16 +100,16 @@ public class RoomSpawner : MonoBehaviour
         switch (side)
         {
             case 1: // bottom, mover la nueva habitación hacia abajo
-                adjustedPosition += new Vector3(0, 0, -10f);
+                adjustedPosition += new Vector3(0, 0, -18f);
                 break;
             case 2: // top, mover la nueva habitación hacia arriba
-                adjustedPosition += new Vector3(0, 0, 10f);
+                adjustedPosition += new Vector3(0, 0, 18f);
                 break;
             case 3: // left, mover la nueva habitación hacia la izquierda
-                adjustedPosition += new Vector3(-10f, 0, 0);
+                adjustedPosition += new Vector3(-18f, 0, 0);
                 break;
             case 4: // right, mover la nueva habitación hacia la derecha
-                adjustedPosition += new Vector3(10f, 0, 0);
+                adjustedPosition += new Vector3(18f, 0, 0);
                 break;
         }
 
