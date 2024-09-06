@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6cab18a05e468e41ad4fabb47eef151, type: 3}
-  m_Name: Item_LifePotion
+  m_Name: Item_ChargeAttack
   m_EditorClassIdentifier: 
-  itemName: Life Potion
-  description: Recover a set amount of life
+  itemName: Charge Attack
+  description: You will be able to charge your attack to make greater damage.
   sprite: {fileID: 21300000, guid: 79e216c365815854bacb53d44827eea6, type: 3}
-  coinCost: 10
+  coinCost: 900

@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6cab18a05e468e41ad4fabb47eef151, type: 3}
-  m_Name: Item_LifePotion
+  m_Name: Item_LastWill
   m_EditorClassIdentifier: 
-  itemName: Life Potion
-  description: Recover a set amount of life
+  itemName: Last Will
+  description: If you would receive a lethal attack, you will have a tiny little
+    chance that your life will not be 0.
   sprite: {fileID: 21300000, guid: 79e216c365815854bacb53d44827eea6, type: 3}
-  coinCost: 10
+  coinCost: 100

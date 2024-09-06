@@ -10,19 +10,21 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     [Header("Stats")]
-    public float speed = 5f;
+    public int coinsCount = 200;
     public float life = 50f;
     public float maxLife = 50f;
-    public float attackDamage = 1f;
+    public float speed = 5f;
+    public float baseAttackDamage = 1f;
+    public float currentAttackDamage = 1f;
+    public float poweredAttackDamage = 5f;
     public float dashSpeed = 20f;
     public float dashDuration = 0.15f;
     public float stompLifeCost = 10f;
-    public int coinsCount = 0;
     public float stompForce = 20f;
     public float stompRadius = 5f;
     public float mainAttackDuration = 0.5f;
     public Vector3 mainAttackOffset = new Vector3(0, 0, 1f); // Desplazamiento hacia adelante
-    public float knifeAttackDistance = 1f;
+    public float knifeAttackDistance = 2f;
     public float knifeAttackDuration = 0.5f;
     public Vector3 knifeAttackDirection = Vector3.forward;
     Vector3 initialLocalPosition;
@@ -30,7 +32,6 @@ public class Player : MonoBehaviour
     bool isInventoryOpen = false;
     bool isDashing = false;
     float dashTimeLeft = 0f;
-    bool isMainAttacking = false;
 
     [Header("Referencias")]
     public Rigidbody rb;
@@ -40,7 +41,17 @@ public class Player : MonoBehaviour
     public Transform knife;
     public CapsuleCollider knifeCollider;
     public Image inventory;
+    public Image shopButton;
     public Image shop;
+
+    [Header("Items")]
+    public bool isAttackUpActive = false;
+    public float attackTimeLeft = 0f;
+    public bool isInvincibilityActive = false;
+    public float invincibilityTimeLeft = 0f;
+    public bool isOneTimeShieldActive = false;
+    public bool isLastWillActive = false;
+    public float lastWillChance = 0.2f;
 
     [Header("UI")]
     public TextMeshProUGUI CoinsText;
@@ -49,7 +60,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CoinsText.text = ""+coinsCount;
+        CoinsText.text = "" + coinsCount;
         lifeBar.fillAmount = life / maxLife;
         initialLocalPosition = knife.localPosition;
         knifeCollider.enabled = false;
@@ -60,6 +71,42 @@ public class Player : MonoBehaviour
     {
         Movement();
         Dash();
+        Invincibility();
+        AttackUp();
+    }
+
+    void Invincibility()
+    {
+        if (isInvincibilityActive)
+        {
+            if (invincibilityTimeLeft > 0f)
+            {
+                invincibilityTimeLeft -= Time.deltaTime;
+            }
+            else//Desactivar
+            {
+                invincibilityTimeLeft = 0f;
+                isInvincibilityActive = false;
+            }
+        }
+    }
+
+    void AttackUp()
+    {
+        if (isAttackUpActive)
+        {
+            if (attackTimeLeft > 0f)
+            {
+                attackTimeLeft -= Time.deltaTime;
+                currentAttackDamage = poweredAttackDamage;
+            }
+            else//Desactivar
+            {
+                attackTimeLeft = 0f;
+                isAttackUpActive = false;
+                currentAttackDamage = baseAttackDamage;
+            }
+        }
     }
 
     void Movement()
@@ -69,7 +116,7 @@ public class Player : MonoBehaviour
 
         rb.velocity = new Vector3(x * speed, 0, z * speed);
 
-        if(x != 0 || z != 0)
+        if (x != 0 || z != 0)
         {
             body.rotation = Quaternion.LookRotation(rb.velocity);
         }
@@ -82,7 +129,7 @@ public class Player : MonoBehaviour
 
     IEnumerator KnifeAttack()
     {
-        // Fijamos la posición inicial en cada ataque
+        // Fijamos la posici?n inicial en cada ataque
         knife.localPosition = initialLocalPosition;
 
         float elapsedTime = 0f;
@@ -99,7 +146,7 @@ public class Player : MonoBehaviour
         knife.localPosition = endPosition;
         knifeCollider.enabled = true;
 
-        // Espera un pequeño intervalo de tiempo antes de volver
+        // Espera un peque?o intervalo de tiempo antes de volver
         yield return new WaitForSeconds(0.1f);
 
         elapsedTime = 0f;
@@ -126,7 +173,7 @@ public class Player : MonoBehaviour
         {
             life -= stompLifeCost;
             lifeBar.fillAmount = life / maxLife;
-            
+
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, stompRadius);
 
             foreach (Collider hitCollider in hitColliders)
@@ -142,24 +189,23 @@ public class Player : MonoBehaviour
                         enemyRigidbody.AddForce(pushDirection * stompForce, ForceMode.Impulse);
                     }
 
-                    // Hacer daño al enemigo
+                    // Hacer da?o al enemigo
                     Enemy enemy = hitCollider.GetComponent<Enemy>();
                     if (enemy != null)
                     {
-                        enemy.TakeDamage(attackDamage);
+                        enemy.TakeDamage(currentAttackDamage);
                     }
                 }
             }
         }
     }
 
-    // Visualización del radio de ataque en la escena
+    // Visualizaci?n del radio de ataque en la escena
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, stompRadius);
     }
-
 
     public void TriggerDash()
     {
@@ -183,7 +229,7 @@ public class Player : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Room"))
                 {
-                    isDashing = false; // Detener el dash si hay una colisión
+                    isDashing = false; // Detener el dash si hay una colision
                     return;
                 }
             }
@@ -201,7 +247,7 @@ public class Player : MonoBehaviour
             inventory.gameObject.SetActive(false);
             isInventoryOpen = false;
         }
-        else if(!isShopOpen)//abrir
+        else if (!isShopOpen)//abrir
         {
             inventory.gameObject.SetActive(true);
             isInventoryOpen = true;
@@ -215,8 +261,9 @@ public class Player : MonoBehaviour
             shop.gameObject.SetActive(false);
             isShopOpen = false;
         }
-        else if(!isInventoryOpen)//abrir
+        else if (!isInventoryOpen)//abrir
         {
+            ShopManager.Instance.ResetShopText();
             shop.gameObject.SetActive(true);
             isShopOpen = true;
         }
@@ -224,11 +271,55 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        life -= damage;
-        lifeBar.fillAmount = life / maxLife;
-        if (life <= 0)
+        if (!isInvincibilityActive)
         {
-            SceneManager.LoadScene("Game");  // Reinicia la escena cuando la vida llega a 0
+            if (isOneTimeShieldActive)
+            {
+                isOneTimeShieldActive = false;
+            }
+            else
+            {
+                life -= damage;
+                lifeBar.fillAmount = life / maxLife;
+                if (life <= 0)
+                {
+                    if (isLastWillActive)
+                    {
+                        if (Random.value <= lastWillChance)
+                        {
+                            Debug.Log("Last Will Activated. Gods blessed you with another chance");
+                            life = 10f;
+                            lifeBar.fillAmount = life / maxLife;
+                        }
+                        else
+                        {
+                            Debug.Log("Better luck next time");
+                            isLastWillActive = false;
+                            SceneManager.LoadScene("Game");
+                        }
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("Game");  // Reinicia la escena cuando la vida llega a 0
+                    }
+                }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Lobby"))
+        {
+            shopButton.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Lobby"))
+        {
+            shopButton.gameObject.SetActive(false);
         }
     }
 }

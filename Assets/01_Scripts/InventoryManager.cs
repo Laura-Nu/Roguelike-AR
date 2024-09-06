@@ -19,7 +19,7 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i].item != null)
+            if (items[i].item != null)//Para +1 a un item
             {
                 if (items[i].item.itemName == newItem.itemName)
                 {
@@ -29,7 +29,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)//Para nuevo item
         {
             if (items[i].item == null)
             {
