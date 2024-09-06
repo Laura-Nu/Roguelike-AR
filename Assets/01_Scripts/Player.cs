@@ -269,6 +269,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void AddCoins(int amount)
+    {
+        coinsCount += amount;
+        CoinsText.text = coinsCount.ToString();
+    }
+
     public void TakeDamage(float damage)
     {
         if (!isInvincibilityActive)
