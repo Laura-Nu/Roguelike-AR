@@ -5,12 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - SpawnPoint
-  - Rooms
   - Room
   - Activador
   - Enemy
   - Hall
   - Lobby
+  - Door
   layers:
   - Default
   - TransparentFX

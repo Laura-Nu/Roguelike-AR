@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public class Door : MonoBehaviour
 {
     void Start()
     {
@@ -12,10 +12,5 @@ public class Room : MonoBehaviour
     void Update()
     {
         
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Destroy(gameObject);
     }
 }

@@ -19718,9 +19718,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4930426926436709089}
+  - component: {fileID: 1960250484202892192}
   m_Layer: 0
   m_Name: Hall
-  m_TagString: Untagged
+  m_TagString: Hall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19750,6 +19751,27 @@ Transform:
   - {fileID: 9140569263229775672}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1960250484202892192
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4883441651825205184}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20.447676, y: 3.5496948, z: 7.3992386}
+  m_Center: {x: -0.074988365, y: 1.2748476, z: -0.09998703}
 --- !u!1 &4968367107099760564
 GameObject:
   m_ObjectHideFlags: 0
@@ -39258,7 +39280,7 @@ GameObject:
   - component: {fileID: 4940348528986993132}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Room
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39273,7 +39295,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 2.5}
-  m_LocalScale: {x: 18, y: 1.9, z: 1}
+  m_LocalScale: {x: 20, y: 1.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6547655786164505398}
@@ -39348,8 +39370,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.999862, z: 1}
-  m_Center: {x: 0, y: 0.4999307, z: 0}
+  m_Size: {x: 1, y: 1.868299, z: 1}
+  m_Center: {x: 0, y: 0.4341491, z: 0}
 --- !u!1 &6452762131285525634
 GameObject:
   m_ObjectHideFlags: 0
@@ -44211,7 +44233,7 @@ GameObject:
   - component: {fileID: 3782752581589799520}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Room
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44226,7 +44248,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.7631, z: -2.5}
-  m_LocalScale: {x: 18, y: 4.4258614, z: 1}
+  m_LocalScale: {x: 20, y: 4.4258614, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1043996586415787712}
@@ -44301,8 +44323,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.81926584, z: 1}
+  m_Center: {x: 0, y: -0.09036698, z: 0}
 --- !u!1 &6893032516524936407
 GameObject:
   m_ObjectHideFlags: 0
@@ -49161,7 +49183,7 @@ GameObject:
   - component: {fileID: 9040245294407717710}
   m_Layer: 0
   m_Name: Walls
-  m_TagString: Room
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58924,6 +58946,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSide: 0
+  roomTemplate: {fileID: 0}
+  hall: {fileID: 0}
+  minRooms: 10
+  maxRooms: 30
+  closeDoorChance: 0.5
 --- !u!65 &3789784450643783185
 BoxCollider:
   m_ObjectHideFlags: 0
