@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3265441516853288080}
-  - component: {fileID: 3710604999806588213}
+  - component: {fileID: 6088929724320498120}
   - component: {fileID: 888842939354185006}
   - component: {fileID: 703373714539312860}
   - component: {fileID: 4250326364222327819}
@@ -36,7 +36,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 58.433, y: 40.423, z: 134.991}
---- !u!114 &3710604999806588213
+--- !u!114 &6088929724320498120
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,10 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c14a1bb9fea95cd45b87778f9017ddb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  timeToDestroy: 5
+  speed: 4
+  timeToDestroy: 100
   damage: 1
-  playerBullet: 1
+  playerBullet: 0
 --- !u!33 &888842939354185006
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -4,51 +4,44 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 7f;
-    public float timeToDestroy = 4f;
-    public float damage = 1f;
+    public float speed = 10f;  // Velocidad de la bala
+    public float timeToDestroy = 100f;  // Tiempo antes de destruir la bala
+    public float damage = 1f;  // Daño que inflige la bala
     public bool playerBullet = false;  // Diferenciar entre bala de jugador y de enemigo
+
+    private Rigidbody rb;
 
     void Start()
     {
-        Destroy(gameObject, timeToDestroy);  // Destruir la bala despu�s de un tiempo
+        // Destruir la bala después de un tiempo
+        Destroy(gameObject, timeToDestroy);
+
+        // Si hay un Rigidbody, desactivar la gravedad
+        rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = false; // Desactivar la gravedad
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Movimiento hacia adelante en el espacio 3D
+        // Movimiento hacia adelante en el eje Z
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("Colisi�n detectada con: " + collision.gameObject.name);
-
-        if (playerBullet && collision.gameObject.CompareTag("Enemy"))
+        // Solo se maneja la colisión con el jugador
+        if (!playerBullet && collision.CompareTag("Player"))
         {
-            Debug.Log("Bala del jugador colision� con el enemigo");
-            Enemy e = collision.gameObject.GetComponent<Enemy>();
-            if (e != null)
-            {
-                e.TakeDamage(damage);
-            }
-            Destroy(gameObject);
-        }
-        else if (!playerBullet && collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Bala del enemigo colision� con el jugador");
-            Player p = collision.gameObject.GetComponent<Player>();
+            Debug.Log("Bala del enemigo colisionó con el jugador");
+            Player p = collision.GetComponent<Player>();
             if (p != null)
             {
-                p.TakeDamage(2f);  // Se quitan 2 unidades de vida al Player
+                p.TakeDamage(damage);  // Infligir daño al jugador
             }
-            Destroy(gameObject);  // Se destruye la bala despu�s de la colisi�n con el Player
-        }
-        else if (collision.gameObject.CompareTag("Room") || collision.gameObject.CompareTag("Hall"))
-        {
-            Debug.Log("Bala colision� con room");
-            Destroy(gameObject);
+            Destroy(gameObject);  // Destruir la bala después de colisionar
         }
     }
 }
