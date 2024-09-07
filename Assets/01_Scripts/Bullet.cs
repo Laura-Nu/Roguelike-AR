@@ -43,5 +43,6 @@ public class Bullet : MonoBehaviour
             }
             Destroy(gameObject);  // Destruir la bala después de colisionar
         }
+        
     }
 }

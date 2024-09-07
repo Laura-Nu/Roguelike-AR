@@ -53,7 +53,7 @@ MonoBehaviour:
   leftPoint: {fileID: 6414730508871941401}
   rightPoint: {fileID: 330397723500061322}
   enemyPrefabs:
-  - {fileID: 7780243222856658163, guid: 4d7ac2a282dbfbb4ba9eb0d02c1e488a, type: 3}
+  - {fileID: 3628357564116322822, guid: 4d7ac2a282dbfbb4ba9eb0d02c1e488a, type: 3}
   - {fileID: 2300195926182789489, guid: b76ade50ab763c7469a645a45ba759cb, type: 3}
   - {fileID: 1350343494128664723, guid: 701576434d9e9844180a01baf3d62045, type: 3}
   timeBtwSpawn: 1.5

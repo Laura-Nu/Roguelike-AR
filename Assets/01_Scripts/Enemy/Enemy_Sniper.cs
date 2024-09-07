@@ -4,27 +4,21 @@ using UnityEngine;
 
 public class Enemy_Sniper : MonoBehaviour
 {
-    public float detectionRange = 40f;
-    public GameObject bulletPrefab;
-    public Transform firePoint;
-    public float fireRate = 0.3f;
-    public AudioClip shootingSound;
-    public int maxHealth = 4;
-    public float moveSpeed = 5f; // Ajustado para velocidad de movimiento más realista
-    public float rotationSpeed = 5f;
-    public float collisionDamage = 3f;
+    public float life = 2f;
+    public float detectionRange = 20f; // Rango de detección del jugador
+    public float rotationSpeed = 5f; // Velocidad de rotación
+    public float moveSpeed = 3f; // Velocidad de movimiento del enemigo
+    public float timeBtwShoot = 2.3f; // Tiempo entre disparos
+    public Transform firePoint; // Punto desde donde se disparan las balas
+    public GameObject bulletPrefab; // Prefab de la bala del enemigo
+    public float shootInterval = 0.1f; // Intervalo entre disparos de balas
 
     private Transform player;
-    private bool isShooting = false;
-    private float nextFireTime = 0f;
-    private int currentHealth;
-    private Quaternion originalRotation;
+    private float shootTimer = 0f;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        currentHealth = maxHealth;
-        originalRotation = transform.rotation;
     }
 
     void Update()
@@ -33,69 +27,64 @@ public class Enemy_Sniper : MonoBehaviour
 
         if (distanceToPlayer <= detectionRange)
         {
-            isShooting = true;
             RotateTowardsPlayer();
             MoveTowardsPlayer();
-        }
-        else
-        {
-            isShooting = false;
-            ResetRotation();
-            MoveInZ(); // Continuar moviéndose en Z si no está persiguiendo al jugador
-        }
-
-        if (isShooting && Time.time >= nextFireTime)
-        {
-            Shoot();
-            nextFireTime = Time.time + fireRate;
+            Shoot(); // Disparar hacia el jugador
         }
     }
 
-    void Shoot()
-    {
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        bullet.GetComponent<Bullet>().playerBullet = false;
-
-        if (shootingSound != null)
-        {
-            AudioSource.PlayClipAtPoint(shootingSound, transform.position);
-        }
-    }
-
-    void MoveInZ()
-    {
-        // Movimiento en el eje Z cuando no se está persiguiendo al jugador
-        transform.position += new Vector3(0, 0, -moveSpeed * Time.deltaTime);
-    }
-
-    void MoveTowardsPlayer()
-    {
-        // Moverse hacia el jugador si está en rango
-        Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // Mantener el movimiento en el plano horizontal
-        transform.position += direction * moveSpeed * Time.deltaTime;
-    }
-
+    // Método para girar hacia el jugador
     void RotateTowardsPlayer()
     {
-        // Rotar hacia el jugador
-        Vector3 direction = player.position - transform.position;
-        direction.y = 0; // Mantener la rotación en el plano horizontal
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+        Vector3 directionToPlayer = player.position - transform.position;
+        directionToPlayer.y = 0; // Asegurar que la dirección sea horizontal en el plano X-Z
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-    void ResetRotation()
+    // Método para mover hacia el jugador
+    void MoveTowardsPlayer()
     {
-        // Restablecer la rotación original cuando el jugador está fuera de rango
-        transform.rotation = Quaternion.Slerp(transform.rotation, originalRotation, rotationSpeed * Time.deltaTime);
+        Vector3 directionToPlayer = player.position - transform.position;
+        directionToPlayer.y = 0; // Asegurar que el movimiento sea horizontal
+
+        // Mover al enemigo hacia el jugador
+        transform.position += directionToPlayer.normalized * moveSpeed * Time.deltaTime;
     }
 
-    public void TakeDamage(int damage)
+    // Método para disparar balas
+    void Shoot()
     {
-        currentHealth -= damage;
+        shootTimer += Time.deltaTime;
 
-        if (currentHealth <= 0)
+        if (shootTimer >= timeBtwShoot)
+        {
+            shootTimer = 0f;
+
+            // Iniciar la corrutina para disparar 3 balas seguidas
+            StartCoroutine(ShootMultipleBullets());
+        }
+    }
+
+    // Corrutina para disparar 3 balas seguidas
+    IEnumerator ShootMultipleBullets()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (firePoint != null && bulletPrefab != null)
+            {
+                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            }
+            yield return new WaitForSeconds(shootInterval); // Esperar antes de disparar la siguiente bala
+        }
+    }
+
+    // Método para recibir daño
+    public void TakeDamage(float damage)
+    {
+        life -= damage;
+        if (life <= 0)
         {
             Die();
         }
@@ -106,29 +95,17 @@ public class Enemy_Sniper : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Detección de colisiones
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Player playerScript = collision.gameObject.GetComponent<Player>();
-            if (playerScript != null)
+            Player p = collision.gameObject.GetComponent<Player>();
+            if (p != null)
             {
-                playerScript.TakeDamage(collisionDamage);
-                Die();
+                p.TakeDamage(1f);
             }
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("BulletPlayer"))
-        {
-            Bullet bullet = other.GetComponent<Bullet>();
-            if (bullet != null)
-            {
-                TakeDamage((int)bullet.damage);
-                Destroy(other.gameObject);
-            }
+            Destroy(gameObject);
         }
     }
 }
