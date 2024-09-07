@@ -32,17 +32,27 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
-        // Solo se maneja la colisión con el jugador
-        if (!playerBullet && collision.CompareTag("Player"))
+        // Manejar colisiones con el jugador o con objetos con tag "Lobby"
+        if (!playerBullet && (collision.CompareTag("Player") || collision.CompareTag("Lobby")))
         {
-            Debug.Log("Bala del enemigo colisionó con el jugador");
-            Player p = collision.GetComponent<Player>();
-            if (p != null)
+            // Si colisiona con el jugador, infligir daño
+            if (collision.CompareTag("Player"))
             {
-                p.TakeDamage(damage);  // Infligir daño al jugador
+                Debug.Log("Bala del enemigo colisionó con el jugador");
+                Player p = collision.GetComponent<Player>();
+                if (p != null)
+                {
+                    p.TakeDamage(damage);  // Infligir daño al jugador
+                }
             }
-            Destroy(gameObject);  // Destruir la bala después de colisionar
+            // Si colisiona con un objeto con tag "Lobby"
+            else if (collision.CompareTag("Lobby"))
+            {
+                Debug.Log("Bala colisionó con el Lobby");
+            }
+
+            // Destruir la bala después de colisionar
+            Destroy(gameObject);
         }
-        
     }
 }

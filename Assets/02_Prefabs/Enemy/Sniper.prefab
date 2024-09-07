@@ -720,7 +720,7 @@ MonoBehaviour:
   life: 2
   detectionRange: 20
   rotationSpeed: 5
-  moveSpeed: 3
+  moveSpeed: 1
   timeBtwShoot: 1
   firePoint: {fileID: 585904500416344992}
   bulletPrefab: {fileID: 3905583420179092270, guid: 14c14a60742a21d4eaf08bae41e09e0c, type: 3}
