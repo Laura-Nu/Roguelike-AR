@@ -42,6 +42,13 @@ public class Enemy_Kamikase : MonoBehaviour
 
     void ChasePlayer()
     {
+        // Hacer que el enemigo gire siempre para mirar al jugador
+        Vector3 directionToPlayer = player.position - transform.position;
+        directionToPlayer.y = 0; // Mantener la rotación en el plano XZ (opcional, según el diseño del juego)
+        Quaternion rotationToPlayer = Quaternion.LookRotation(directionToPlayer);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotationToPlayer, Time.deltaTime * 5f); // Ajustar la velocidad de rotación si es necesario
+
+        // Mover hacia el jugador
         transform.position = Vector3.MoveTowards(transform.position, player.position, currentSpeed * Time.deltaTime);
     }
 
@@ -87,14 +94,6 @@ public class Enemy_Kamikase : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(explosionSound, transform.position);
         }
-
-        // Se ha eliminado la llamada a Player
-        // Notificar al Player que un enemigo ha sido eliminado
-        // Player player = FindObjectOfType<Player>();
-        // if (player != null)
-        // {
-        //     player.EnemyKilled();  // Llamar al método en Player
-        // }
 
         Destroy(gameObject);
     }
