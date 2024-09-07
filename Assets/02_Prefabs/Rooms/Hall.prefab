@@ -19718,7 +19718,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4930426926436709089}
-  - component: {fileID: 1960250484202892192}
+  - component: {fileID: 2758365515048390764}
+  - component: {fileID: 4859589267349378859}
   m_Layer: 0
   m_Name: Hall
   m_TagString: Hall
@@ -19735,7 +19736,7 @@ Transform:
   m_GameObject: {fileID: 4883441651825205184}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25, y: 0, z: -33.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19751,7 +19752,7 @@ Transform:
   - {fileID: 9140569263229775672}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1960250484202892192
+--- !u!65 &2758365515048390764
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19770,8 +19771,35 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 20.447676, y: 3.5496948, z: 7.3992386}
-  m_Center: {x: -0.074988365, y: 1.2748476, z: -0.09998703}
+  m_Size: {x: 20, y: 3.622167, z: 6}
+  m_Center: {x: 0, y: 1.3065512, z: 0}
+--- !u!54 &4859589267349378859
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4883441651825205184}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4968367107099760564
 GameObject:
   m_ObjectHideFlags: 0
@@ -58948,8 +58976,6 @@ MonoBehaviour:
   openSide: 0
   roomTemplate: {fileID: 0}
   hall: {fileID: 0}
-  minRooms: 10
-  maxRooms: 30
   closeDoorChance: 0.5
 --- !u!65 &3789784450643783185
 BoxCollider:

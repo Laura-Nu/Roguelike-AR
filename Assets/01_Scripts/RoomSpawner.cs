@@ -9,6 +9,8 @@ public class RoomSpawner : MonoBehaviour
     public GameObject hall;
     private bool spawned = false;
 
+    public static List<GameObject> invisibleDoors = new List<GameObject>(); // Lista para puertas invisibles
+
     // Contador estático para contar el número de habitaciones generadas
     public static int roomCount = 0;
 
@@ -40,43 +42,38 @@ public class RoomSpawner : MonoBehaviour
 
         if (!spawned && roomCount < maxRooms)
         {
-            GameObject roomToSpawn = null;
-            int attempts = 0;
-            bool foundValidRoom = false;
-
-            while (attempts < 10 && !foundValidRoom)
+            if (openDoors[openSide - 1])
             {
-                if (openDoors[openSide - 1])
+                Vector3 newPosition = AdjustRoomPosition(transform.position, openSide);
+
+                if (IsPositionFree(newPosition))
                 {
-                    roomToSpawn = roomTemplate;
+                    // Generamos el hall en el spawn point actual
+                    GameObject newHall = GenerateHall(openSide);
 
-                    if (roomToSpawn != null)
-                    {
-                        Vector3 newPosition = AdjustRoomPosition(transform.position, openSide);
+                    // Instancia la habitación
+                    GameObject newRoom = Instantiate(roomTemplate, newPosition, roomTemplate.transform.rotation);
 
-                        if (IsPositionFree(newPosition))
-                        {
-                            foundValidRoom = true;
-                            GenerateHall(openSide);
-                            Instantiate(roomToSpawn, newPosition, roomToSpawn.transform.rotation);
-                            roomCount++;
-                            spawned = true;
-                        }
-                    }
+                    // Invisibilizar las puertas conectadas al hall
+                    HandleDoorsVisibility(newRoom, newHall);
+
+                    // Cerrar puertas no conectadas
+                    CloseNonConnectedDoors(newRoom);
+
+                    roomCount++;
+                    spawned = true;
                 }
-                attempts++;
-            }
-
-            if (!foundValidRoom)
-            {
-                spawned = true;
+                else
+                {
+                    spawned = true; // Marca como generado si no se puede colocar la habitación
+                }
             }
         }
     }
 
     private bool IsPositionFree(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapBox(position, new Vector3(9, 9, 9));
+        Collider[] colliders = Physics.OverlapBox(position, new Vector3(8, 0, 8));
         foreach (var collider in colliders)
         {
             if (collider.CompareTag("Room"))
@@ -87,7 +84,7 @@ public class RoomSpawner : MonoBehaviour
         return true;
     }
 
-    private void GenerateHall(int side)
+    private GameObject GenerateHall(int side)
     {
         Vector3 hallPosition = transform.position;
         Quaternion hallRotation = Quaternion.identity;
@@ -100,7 +97,7 @@ public class RoomSpawner : MonoBehaviour
             case 4: hallRotation = Quaternion.Euler(0, 0, 0); break;
         }
 
-        Instantiate(hall, hallPosition, hallRotation);
+        return Instantiate(hall, hallPosition, hallRotation);
     }
 
     private Vector3 AdjustRoomPosition(Vector3 originalPosition, int side)
@@ -116,6 +113,62 @@ public class RoomSpawner : MonoBehaviour
         }
 
         return adjustedPosition;
+    }
+
+    private void HandleDoorsVisibility(GameObject newRoom, GameObject newHall)
+    {
+        // Busca todas las puertas dentro de RoomTemplate
+        GameObject[] doorsInRoom = GameObject.FindGameObjectsWithTag("Door");
+
+        foreach (GameObject door in doorsInRoom)
+        {
+            // Verificar si la puerta está cerca del hall
+            if (IsDoorNearHall(door, newHall))
+            {
+                // Si está alineada y en contacto, invisibilizar la puerta
+                door.GetComponent<Collider>().enabled = false;
+                door.GetComponent<MeshRenderer>().enabled = false;
+
+                // Añadir la puerta a la lista de puertas invisibles
+                invisibleDoors.Add(door);
+            }
+        }
+    }
+
+    // Verifica si la puerta está en contacto cercano con el hall
+    private bool IsDoorNearHall(GameObject door, GameObject hall)
+    {
+        Collider doorCollider = door.GetComponent<Collider>();
+        Collider hallCollider = hall.GetComponent<Collider>();
+
+        // Usamos Physics.OverlapBox para verificar si hay solapamiento entre la puerta y el hall
+        Collider[] colliders = Physics.OverlapBox(door.transform.position, doorCollider.bounds.extents);
+
+        foreach (Collider col in colliders)
+        {
+            if (col == hallCollider) // Verificamos si la puerta está tocando el hall
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void CloseNonConnectedDoors(GameObject newRoom)
+    {
+        // Busca todas las puertas dentro del RoomTemplate
+        GameObject[] doorsInRoom = GameObject.FindGameObjectsWithTag("Door");
+
+        foreach (GameObject door in doorsInRoom)
+        {
+            // Si la puerta no está en la lista de invisibles, debería estar cerrada (visible)
+            if (!invisibleDoors.Contains(door))
+            {
+                door.GetComponent<Collider>().enabled = true;
+                door.GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
