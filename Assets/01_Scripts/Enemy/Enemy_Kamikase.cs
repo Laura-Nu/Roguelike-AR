@@ -44,9 +44,9 @@ public class Enemy_Kamikase : MonoBehaviour
     {
         // Hacer que el enemigo gire siempre para mirar al jugador
         Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0; // Mantener la rotación en el plano XZ (opcional, según el diseño del juego)
+        directionToPlayer.y = 0; // Mantener la rotaciï¿½n en el plano XZ (opcional, segï¿½n el diseï¿½o del juego)
         Quaternion rotationToPlayer = Quaternion.LookRotation(directionToPlayer);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotationToPlayer, Time.deltaTime * 5f); // Ajustar la velocidad de rotación si es necesario
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotationToPlayer, Time.deltaTime * 5f); // Ajustar la velocidad de rotaciï¿½n si es necesario
 
         // Mover hacia el jugador
         transform.position = Vector3.MoveTowards(transform.position, player.position, currentSpeed * Time.deltaTime);
