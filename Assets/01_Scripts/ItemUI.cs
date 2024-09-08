@@ -85,6 +85,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         {
             case "Last Will":
                 p.isLastWillActive = true;
+                p.lastWillImgEffect.gameObject.SetActive(true);
                 break;
             case "Life Potion":
                 p.life = p.life + 10f > p.maxLife ? p.maxLife : p.life + 10f;
@@ -92,14 +93,17 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
                 break;
             case "One-Time Shield":
                 p.isOneTimeShieldActive = true;
+                p.shieldImgEffect.gameObject.SetActive(true);
                 break;
             case "Temporal Invincibility":
                 p.invincibilityTimeLeft += 10f;
                 p.isInvincibilityActive = true;
+                p.invincibilityImgEffect.gameObject.SetActive(true);
                 break;
             case "Attack Up":
                 p.attackTimeLeft += 10f;
                 p.isAttackUpActive = true;
+                p.atkUpImgEffect.gameObject.SetActive(true);
                 break;
         }
     }

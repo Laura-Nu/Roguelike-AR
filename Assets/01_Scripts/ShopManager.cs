@@ -88,7 +88,7 @@ public class ShopManager : MonoBehaviour
 
                 //Se pueden comprar sin limite
                 case "Last Will":
-                    // Añadir el item al inventario
+                    // Anadir el item al inventario
                     InventoryManager.Instance.AddItem(selectedItem);
                     break;
                 case "Life Potion":
@@ -104,7 +104,7 @@ public class ShopManager : MonoBehaviour
                     InventoryManager.Instance.AddItem(selectedItem);
                     break;
             }
-            
+
             // Actualizar UI o feedback
             descriptionText.text = $"Thanks for buying [{selectedItem.itemName}].";
             buyButton.gameObject.SetActive(false);

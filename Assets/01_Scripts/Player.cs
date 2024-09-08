@@ -43,6 +43,11 @@ public class Player : MonoBehaviour
     public Image inventory;
     public Image shopButton;
     public Image shop;
+    public Image atkUpImgEffect;
+    public Image shieldImgEffect;
+    public Image lastWillImgEffect;
+    public Image invincibilityImgEffect;
+
 
     [Header("Items")]
     public bool isAttackUpActive = false;
@@ -64,6 +69,10 @@ public class Player : MonoBehaviour
         lifeBar.fillAmount = life / maxLife;
         initialLocalPosition = knife.localPosition;
         knifeCollider.enabled = false;
+        atkUpImgEffect.gameObject.SetActive(false);
+        shieldImgEffect.gameObject.SetActive(false);
+        lastWillImgEffect.gameObject.SetActive(false);
+        invincibilityImgEffect.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -87,6 +96,7 @@ public class Player : MonoBehaviour
             {
                 invincibilityTimeLeft = 0f;
                 isInvincibilityActive = false;
+                invincibilityImgEffect.gameObject.SetActive(false);
             }
         }
     }
@@ -105,6 +115,7 @@ public class Player : MonoBehaviour
                 attackTimeLeft = 0f;
                 isAttackUpActive = false;
                 currentAttackDamage = baseAttackDamage;
+                atkUpImgEffect.gameObject.SetActive(false);
             }
         }
     }
@@ -282,6 +293,7 @@ public class Player : MonoBehaviour
             if (isOneTimeShieldActive)
             {
                 isOneTimeShieldActive = false;
+                shieldImgEffect.gameObject.SetActive(false);
             }
             else
             {
@@ -294,6 +306,7 @@ public class Player : MonoBehaviour
                         if (Random.value <= lastWillChance)
                         {
                             Debug.Log("Last Will Activated. Gods blessed you with another chance");
+                            lastWillImgEffect.gameObject.SetActive(false);
                             life = 10f;
                             lifeBar.fillAmount = life / maxLife;
                         }
