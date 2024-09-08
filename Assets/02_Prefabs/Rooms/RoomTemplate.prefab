@@ -53,9 +53,9 @@ MonoBehaviour:
   leftPoint: {fileID: 6414730508871941401}
   rightPoint: {fileID: 330397723500061322}
   enemyPrefabs:
-  - {fileID: 7780243222856658163, guid: 4d7ac2a282dbfbb4ba9eb0d02c1e488a, type: 3}
+  - {fileID: 3628357564116322822, guid: 4d7ac2a282dbfbb4ba9eb0d02c1e488a, type: 3}
   - {fileID: 2300195926182789489, guid: b76ade50ab763c7469a645a45ba759cb, type: 3}
-  - {fileID: 6749076629742631409, guid: 701576434d9e9844180a01baf3d62045, type: 3}
+  - {fileID: 1350343494128664723, guid: 701576434d9e9844180a01baf3d62045, type: 3}
   timeBtwSpawn: 1.5
 --- !u!33 &5431430467862305211
 MeshFilter:
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 4209913397441730676}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 6173428773120055725}
   m_Layer: 0
   m_Name: Cube (6)
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 8996359766413170809}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -772,7 +772,7 @@ GameObject:
   - component: {fileID: 2595249160087178691}
   m_Layer: 0
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1148,7 +1148,7 @@ GameObject:
   - component: {fileID: 6681994040576400895}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1360,7 +1360,7 @@ GameObject:
   - component: {fileID: 9082444348455733274}
   m_Layer: 0
   m_Name: Cube (7)
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1467,7 +1467,7 @@ GameObject:
   - component: {fileID: 1570815207498742183}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1574,7 +1574,7 @@ GameObject:
   - component: {fileID: 3782752581589799520}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Lobby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

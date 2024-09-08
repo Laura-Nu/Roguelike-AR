@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3265441516853288080}
-  - component: {fileID: 3710604999806588213}
+  - component: {fileID: 7298816816212630024}
   - component: {fileID: 888842939354185006}
   - component: {fileID: 703373714539312860}
   - component: {fileID: 4250326364222327819}
-  - component: {fileID: 3973836173668276773}
+  - component: {fileID: 2192047334003534625}
   m_Layer: 0
   m_Name: EnemyBullet
   m_TagString: Untagged
@@ -36,7 +36,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 58.433, y: 40.423, z: 134.991}
---- !u!114 &3710604999806588213
+--- !u!114 &7298816816212630024
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,10 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c14a1bb9fea95cd45b87778f9017ddb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  timeToDestroy: 5
+  speed: 4
+  timeToDestroy: 100
   damage: 1
-  playerBullet: 1
+  playerBullet: 0
 --- !u!33 &888842939354185006
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -123,7 +123,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &3973836173668276773
+--- !u!54 &2192047334003534625
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,7 +145,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0

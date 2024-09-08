@@ -4,48 +4,73 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 5f;  // Velocidad base
     public float life = 2f;
-    public float timeToDestroy = 10f;
-    public float damage = 1f;
-    public float timeBtwShoot = 2f; // Aumentado para disparar más lentamente
-    private float timer = 0f;
-    private bool canShoot = false;
-    public Transform firePoint;
-    public GameObject bulletPrefab;
+    public float detectionRange = 20f; // Rango de detección del jugador
+    public float rotationSpeed = 5f; // Velocidad de rotación
+    public float timeBtwShoot = 2.3f; // Tiempo entre disparos
+    public Transform firePoint; // Punto desde donde se disparan las balas
+    public GameObject bulletPrefab; // Prefab de la bala del enemigo
+    public float shootInterval = 0.1f; // Intervalo entre disparos de balas
+
+    private Transform player;
+    private float shootTimer = 0f;
 
     void Start()
     {
-        speed = Random.Range(3f, 6f);
-        if (Random.Range(0, 2) == 0)
-        {
-            canShoot = true;
-        }
-        Destroy(gameObject, timeToDestroy);
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
     {
-        Shoot();
-        //transform.Translate(-Vector3.forward * speed * Time.deltaTime);
-    }
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-    void Shoot()
-    {
-        if (canShoot)
+        if (distanceToPlayer <= detectionRange)
         {
-            timer += Time.deltaTime;
-            if (timer >= timeBtwShoot)
-            {
-                timer = 0f;
-                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            }
+            RotateTowardsPlayer();
+            Shoot(); // Disparar hacia el jugador
         }
     }
 
+    // Método para girar hacia el jugador
+    void RotateTowardsPlayer()
+    {
+        Vector3 directionToPlayer = player.position - transform.position;
+        directionToPlayer.y = 0; // Asegurar que la dirección sea horizontal en el plano X-Z
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    // Método para disparar balas
+    void Shoot()
+    {
+        shootTimer += Time.deltaTime;
+
+        if (shootTimer >= timeBtwShoot)
+        {
+            shootTimer = 0f;
+
+            // Iniciar la corrutina para disparar 3 balas seguidas
+            StartCoroutine(ShootMultipleBullets());
+        }
+    }
+
+    // Corrutina para disparar 3 balas seguidas
+    IEnumerator ShootMultipleBullets()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (firePoint != null && bulletPrefab != null)
+            {
+                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            }
+            yield return new WaitForSeconds(shootInterval); // Esperar antes de disparar la siguiente bala
+        }
+    }
+
+    // Método para recibir daño
     public void TakeDamage(float damage)
     {
-        Debug.Log("Enemigo recibió daño: " + damage);
         life -= damage;
         if (life <= 0)
         {
@@ -58,6 +83,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Detección de colisiones
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -65,7 +91,7 @@ public class Enemy : MonoBehaviour
             Player p = collision.gameObject.GetComponent<Player>();
             if (p != null)
             {
-                p.TakeDamage(damage);
+                p.TakeDamage(1f);
             }
             Destroy(gameObject);
         }
