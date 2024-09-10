@@ -12,6 +12,7 @@ TagManager:
   - Lobby
   - Door
   - Moneda
+  - BulletPlayer
   layers:
   - Default
   - TransparentFX

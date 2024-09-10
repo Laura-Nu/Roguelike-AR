@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Attack Up
   description: Upgrades your attack power for a set period of time.
-  sprite: {fileID: 21300000, guid: 79e216c365815854bacb53d44827eea6, type: 3}
+  sprite: {fileID: 21300000, guid: e74cede1de919e845b3088e5a977cb07, type: 3}
   coinCost: 200

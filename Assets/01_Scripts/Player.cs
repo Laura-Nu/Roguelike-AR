@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
 
     [Header("Referencias")]
     public Rigidbody rb;
+    public Animator bodyAnim;
     public Transform body;
     public Transform firePoint;
     public GameObject bulletPrefab;
@@ -125,6 +126,7 @@ public class Player : MonoBehaviour
         float x = SimpleInput.GetAxis("Horizontal");
         float z = SimpleInput.GetAxis("Vertical");
 
+        bodyAnim.SetFloat("Speed", x);
         rb.velocity = new Vector3(x * speed, 0, z * speed);
 
         if (x != 0 || z != 0)
@@ -135,6 +137,7 @@ public class Player : MonoBehaviour
 
     public void MainAttack()
     {
+        bodyAnim.SetTrigger("Stab");
         StartCoroutine(KnifeAttack());
     }
 
@@ -185,6 +188,7 @@ public class Player : MonoBehaviour
             life -= stompLifeCost;
             lifeBar.fillAmount = life / maxLife;
 
+            bodyAnim.SetTrigger("Stomp");
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, stompRadius);
 
             foreach (Collider hitCollider in hitColliders)
@@ -314,31 +318,29 @@ public class Player : MonoBehaviour
                         {
                             Debug.Log("Better luck next time");
                             isLastWillActive = false;
-                            SceneManager.LoadScene("Game");
+                            bodyAnim.SetTrigger("Death");
+                            Invoke("RestartLevel", 5f);
                         }
                     }
                     else
                     {
-                        SceneManager.LoadScene("Game");  // Reinicia la escena cuando la vida llega a 0
+                        Invoke("RestartLevel", 5f);
                     }
                 }
             }
         }
     }
-  
+
+    void RestartLevel()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Lobby"))
         {
             shopButton.gameObject.SetActive(true);
-        }
-        else if (other.gameObject.CompareTag("Moneda"))
-        {
-            // Incrementa la cantidad de monedas en 5
-            AddCoins(20);
-
-            // Destruye el objeto de la moneda después de recogerlo
-            Destroy(other.gameObject);
         }
     }
 

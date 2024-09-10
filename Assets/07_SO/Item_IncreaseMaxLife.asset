@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Increase MAX Life
   description: Your max life will be increased (max 3 purchases).
-  sprite: {fileID: 21300000, guid: 79e216c365815854bacb53d44827eea6, type: 3}
+  sprite: {fileID: 21300000, guid: 92893287a3205bc4d81c6533a4abe8e8, type: 3}
   coinCost: 100
