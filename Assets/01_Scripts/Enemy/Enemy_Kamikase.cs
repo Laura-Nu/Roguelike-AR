@@ -100,12 +100,8 @@ public class Enemy_Kamikase : MonoBehaviour
             AudioSource.PlayClipAtPoint(explosionSound, transform.position);
         }
 
-        if (room != null)
-        {
-            room.UpdateEnemyCount();
-            Debug.Log("Enemy Kamikaze died, updating room's enemy count.");
-        }
-
+        room.UpdateEnemyCount();
+        Debug.Log("Enemy Kamikaze died, updating room's enemy count.");
         Destroy(gameObject);
     }
 

@@ -95,11 +95,8 @@ public class Enemy_Sniper : MonoBehaviour
 
     void Die()
     {
-        if (room != null)
-        {
-            room.UpdateEnemyCount();
-            Debug.Log("Enemy Snipper died, updating room's enemy count.");
-        }
+        room.UpdateEnemyCount();
+        Debug.Log("Enemy Snipper died, updating room's enemy count.");
         Destroy(gameObject);
     }
 
@@ -120,7 +117,7 @@ public class Enemy_Sniper : MonoBehaviour
                 Instantiate(coinPrefab, transform.position, Quaternion.identity);
             }
 
-            Destroy(gameObject); // Destruir el enemigo después de spawnear la moneda
+            Die(); // Destruir el enemigo después de spawnear la moneda
         }
     }
 

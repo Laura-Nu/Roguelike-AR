@@ -74,7 +74,7 @@ public class Room : MonoBehaviour
 
     public void UpdateEnemyCount()
     {
-        enemiesInRoom--;
+        enemiesInRoom = enemiesInRoom - 1;
         Debug.Log("ENEMIES IN ROOM DIE" + enemiesInRoom);
         // Cambia el estado del booleano si no hay más enemigos
         if (enemiesInRoom <= 0)
