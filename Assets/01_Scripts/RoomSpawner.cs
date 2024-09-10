@@ -22,6 +22,25 @@ public class RoomSpawner : MonoBehaviour
     public float closeDoorChance = 0.5f;
     private bool[] openDoors = new bool[4]; // Almacena el estado de las 4 puertas
 
+    public void Initialize()
+    {
+        // Reinicia el estado de generación
+        spawned = false;
+        roomCount = 0; // Reinicia el contador de habitaciones generadas
+
+        // Limpia la lista de puertas invisibles para que no se guarden las del laberinto anterior
+        invisibleDoors.Clear();
+
+        // Vuelve a configurar puertas abiertas de manera aleatoria
+        SetRandomOpenDoors();
+
+        // Reinicia la generación de habitaciones
+        StartCoroutine(Spawn());
+
+        Debug.Log("RoomSpawner reinicializado.");
+    }
+
+
     void Start()
     {
         SetRandomOpenDoors();

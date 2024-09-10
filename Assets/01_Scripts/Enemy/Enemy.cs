@@ -5,8 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float life = 2f;
-    public float detectionRange = 20f; // Rango de detecci�n del jugador
-    public float rotationSpeed = 5f; // Velocidad de rotaci�n
+    public float detectionRange = 20f; // Rango de detección del jugador
+    public float rotationSpeed = 5f; // Velocidad de rotación
     public float timeBtwShoot = 2.3f; // Tiempo entre disparos
     public Transform firePoint; // Punto desde donde se disparan las balas
     public GameObject bulletPrefab; // Prefab de la bala del enemigo
@@ -14,8 +14,9 @@ public class Enemy : MonoBehaviour
 
     private Transform player;
     private float shootTimer = 0f;
-
     private Room room;
+    private bool isTakingCover = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -25,24 +26,28 @@ public class Enemy : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= detectionRange)
+        if (distanceToPlayer <= detectionRange && !isTakingCover)
         {
             RotateTowardsPlayer();
             Shoot(); // Disparar hacia el jugador
         }
+
+        // Buscar cobertura si el enemigo está herido
+        if (life < 1f && !isTakingCover)
+        {
+            TakeCover();
+        }
     }
 
-    // M�todo para girar hacia el jugador
     void RotateTowardsPlayer()
     {
         Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0; // Asegurar que la direcci�n sea horizontal en el plano X-Z
+        directionToPlayer.y = 0; // Asegurar que la dirección sea horizontal en el plano X-Z
 
         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-    // M�todo para disparar balas
     void Shoot()
     {
         shootTimer += Time.deltaTime;
@@ -50,13 +55,10 @@ public class Enemy : MonoBehaviour
         if (shootTimer >= timeBtwShoot)
         {
             shootTimer = 0f;
-
-            // Iniciar la corrutina para disparar 3 balas seguidas
             StartCoroutine(ShootMultipleBullets());
         }
     }
 
-    // Corrutina para disparar 3 balas seguidas
     IEnumerator ShootMultipleBullets()
     {
         for (int i = 0; i < 3; i++)
@@ -65,11 +67,10 @@ public class Enemy : MonoBehaviour
             {
                 Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             }
-            yield return new WaitForSeconds(shootInterval); // Esperar antes de disparar la siguiente bala
+            yield return new WaitForSeconds(shootInterval);
         }
     }
 
-    // M�todo para recibir da�o
     public void TakeDamage(float damage)
     {
         life -= damage;
@@ -79,18 +80,36 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void TakeCover()
+    {
+        isTakingCover = true;
+        Vector3 coverPosition = FindClosestCover();
+        if (coverPosition != Vector3.zero)
+        {
+            MoveTo(coverPosition);
+        }
+    }
+
+    Vector3 FindClosestCover()
+    {
+        // Lógica para encontrar la cobertura más cercana (placeholder)
+        return Vector3.zero;
+    }
+
+    void MoveTo(Vector3 position)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, position, rotationSpeed * Time.deltaTime);
+    }
+
     void Die()
     {
         if (room != null)
         {
-            room.UpdateEnemyCount(true);  // Actualiza el contador de enemigos
-            Debug.Log("Enemy died, enemies in room: " + room.enemiesInRoom);
+            room.UpdateEnemyCount(true);
         }
         Destroy(gameObject);
     }
 
-
-    // Detecci�n de colisiones
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

@@ -15,8 +15,8 @@ public class Enemy_Kamikase : MonoBehaviour
     private Transform player;
     private bool isChasing = false;
     private float currentSpeed;
-
     private Room room;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -31,29 +31,32 @@ public class Enemy_Kamikase : MonoBehaviour
         {
             isChasing = true;
             currentSpeed = chaseSpeed;
+
+            if (distanceToPlayer < 10f)
+            {
+                currentSpeed = chaseSpeed * 1.5f; // Aumentar velocidad al acercarse
+            }
+
             ChasePlayer();
         }
         else
         {
             isChasing = false;
             currentSpeed = normalSpeed;
-            MoveInZ();
+            Patrol();
         }
     }
 
     void ChasePlayer()
     {
-        // Hacer que el enemigo gire siempre para mirar al jugador
         Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0; // Mantener la rotaci�n en el plano XZ (opcional, seg�n el dise�o del juego)
+        directionToPlayer.y = 0;
         Quaternion rotationToPlayer = Quaternion.LookRotation(directionToPlayer);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotationToPlayer, Time.deltaTime * 5f); // Ajustar la velocidad de rotaci�n si es necesario
-
-        // Mover hacia el jugador
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotationToPlayer, Time.deltaTime * 5f);
         transform.position = Vector3.MoveTowards(transform.position, player.position, currentSpeed * Time.deltaTime);
     }
 
-    void MoveInZ()
+    void Patrol()
     {
         transform.position += new Vector3(0, 0, currentSpeed * Time.deltaTime);
     }
@@ -98,8 +101,7 @@ public class Enemy_Kamikase : MonoBehaviour
 
         if (room != null)
         {
-            room.UpdateEnemyCount(true);  // Actualiza el contador de enemigos
-            Debug.Log("Enemy died, enemies in room: " + room.enemiesInRoom);
+            room.UpdateEnemyCount(true);
         }
 
         Destroy(gameObject);

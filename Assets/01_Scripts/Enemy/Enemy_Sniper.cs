@@ -16,12 +16,13 @@ public class Enemy_Sniper : MonoBehaviour
 
     private Transform player;
     private float shootTimer = 0f;
-    private Room room;  // Referencia a la habitación
+    private Room room;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        room = FindObjectOfType<Room>();  // Encuentra la habitación más cercana
+        room = FindObjectOfType<Room>();
+        SeekHighGround();
     }
 
     void Update()
@@ -33,6 +34,11 @@ public class Enemy_Sniper : MonoBehaviour
             RotateTowardsPlayer();
             MoveTowardsPlayer();
             Shoot();
+        }
+        else if (distanceToPlayer > 30f)
+        {
+            detectionRange = 50f;
+            timeBtwShoot = 1.5f;
         }
     }
 
@@ -49,7 +55,6 @@ public class Enemy_Sniper : MonoBehaviour
     {
         Vector3 directionToPlayer = player.position - transform.position;
         directionToPlayer.y = 0;
-
         transform.position += directionToPlayer.normalized * moveSpeed * Time.deltaTime;
     }
 
@@ -60,7 +65,6 @@ public class Enemy_Sniper : MonoBehaviour
         if (shootTimer >= timeBtwShoot)
         {
             shootTimer = 0f;
-
             StartCoroutine(ShootMultipleBullets());
         }
     }
@@ -87,16 +91,31 @@ public class Enemy_Sniper : MonoBehaviour
         }
     }
 
+    void SeekHighGround()
+    {
+        Vector3 highPoint = FindHighGround();
+        MoveTo(highPoint);
+    }
+
+    Vector3 FindHighGround()
+    {
+        // Lógica para encontrar el punto más alto (placeholder)
+        return Vector3.zero;
+    }
+
+    void MoveTo(Vector3 position)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
+    }
+
     void Die()
     {
         if (room != null)
         {
-            room.UpdateEnemyCount(true);  // Actualiza el contador de enemigos
-            Debug.Log("Enemy died, enemies in room: " + room.enemiesInRoom);
+            room.UpdateEnemyCount(true);
         }
         Destroy(gameObject);
     }
-
 
     void OnCollisionEnter(Collision collision)
     {
@@ -108,11 +127,7 @@ public class Enemy_Sniper : MonoBehaviour
                 p.TakeDamage(1f);
             }
 
-            if (coinPrefab != null)
-            {
-                Instantiate(coinPrefab, transform.position, Quaternion.identity);
-            }
-
+            Instantiate(coinPrefab, transform.position, Quaternion.identity);
             Die();
         }
     }

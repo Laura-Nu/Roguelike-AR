@@ -63,6 +63,8 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI CoinsText;
     public Image lifeBar;
 
+
+    RoomSpawner roomSpawner;
     // Start is called before the first frame update
     void Start()
     {
@@ -326,7 +328,7 @@ public class Player : MonoBehaviour
                     }
                     else
                     {
-                        Invoke("RestartLevel", 5f);
+                        Invoke("RestartLevel", 3f);
                     }
                 }
             }
@@ -335,8 +337,17 @@ public class Player : MonoBehaviour
 
     void RestartLevel()
     {
+        Debug.Log("Restarting level...");
         SceneManager.LoadScene("Game");
+
+        // Encuentra el objeto RoomSpawner y llama a Initialize después de cargar la escena
+        RoomSpawner roomSpawner = FindObjectOfType<RoomSpawner>();
+        if (roomSpawner != null)
+        {
+            roomSpawner.Initialize();
+        }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
