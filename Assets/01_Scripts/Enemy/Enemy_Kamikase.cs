@@ -102,6 +102,7 @@ public class Enemy_Kamikase : MonoBehaviour
         if (room != null)
         {
             room.UpdateEnemyCount(true);
+            Debug.Log("Enemy Kamikaze died, updating room's enemy count.");
         }
 
         Destroy(gameObject);

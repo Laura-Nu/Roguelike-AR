@@ -106,6 +106,7 @@ public class Enemy : MonoBehaviour
         if (room != null)
         {
             room.UpdateEnemyCount(true);
+            Debug.Log("Enemy died, updating room's enemy count.");
         }
         Destroy(gameObject);
     }

@@ -113,6 +113,7 @@ public class Enemy_Sniper : MonoBehaviour
         if (room != null)
         {
             room.UpdateEnemyCount(true);
+            Debug.Log("Enemy Snipper died, updating room's enemy count.");
         }
         Destroy(gameObject);
     }

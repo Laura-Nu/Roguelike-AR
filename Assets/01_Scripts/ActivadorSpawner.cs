@@ -22,6 +22,7 @@ public class ActivadorSpawner : MonoBehaviour
 
         // Encuentra la habitación más cercana o asigna la referencia de la habitación
         room = FindObjectOfType<Room>();
+        room.enemiesInRoom = enemiesToSpawn;
     }
 
     void Update()
