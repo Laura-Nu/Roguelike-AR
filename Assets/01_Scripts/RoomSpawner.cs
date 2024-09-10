@@ -42,7 +42,7 @@ public class RoomSpawner : MonoBehaviour
 
         if (!spawned && roomCount < maxRooms)
         {
-            if (openDoors[openSide - 1])
+            if (openDoors[openSide - 1] || roomCount < minRooms)
             {
                 Vector3 newPosition = AdjustRoomPosition(transform.position, openSide);
 
