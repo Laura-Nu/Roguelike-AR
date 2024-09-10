@@ -342,6 +342,14 @@ public class Player : MonoBehaviour
         {
             shopButton.gameObject.SetActive(true);
         }
+        else if (other.gameObject.CompareTag("Moneda"))
+        {
+            // Incrementa la cantidad de monedas en 5
+            AddCoins(20);
+
+            // Destruye el objeto de la moneda después de recogerlo
+            Destroy(other.gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider other)

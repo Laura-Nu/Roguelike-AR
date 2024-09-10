@@ -758,7 +758,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3905583420179092270, guid: 14c14a60742a21d4eaf08bae41e09e0c, type: 3}
   shootInterval: 0.1
   coinPrefab: {fileID: 1479163174215766615, guid: 98c5c37071ef6264c8d4c89aa179cbd7, type: 3}
-  firePointMoneda: {fileID: 1161651308173206086}
 --- !u!33 &4193428522744813920
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -857,7 +856,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 32
+  m_Constraints: 36
   m_CollisionDetection: 0
 --- !u!1 &3739841562516331617
 GameObject:
