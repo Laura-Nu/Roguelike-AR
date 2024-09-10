@@ -4,25 +4,28 @@ using UnityEngine;
 
 public class ActivadorSpawner : MonoBehaviour
 {
-    public float detectionRadius = 5f;  // Radio de detección del jugador
-    public Transform leftPoint;  // El punto izquierdo del área de spawn
-    public Transform rightPoint;  // El punto derecho del área de spawn
-    public GameObject[] enemyPrefabs;  // Lista de prefabs de enemigos (Enemy, Kamikaze, Sniper)
+    public float detectionRadius = 5f;
+    public Transform leftPoint;
+    public Transform rightPoint;
+    public GameObject[] enemyPrefabs;
     public float timeBtwSpawn = 1.5f;
+    public int enemiesToSpawn;
 
     private float timer = 0f;
     private bool isSpawning = false;
-    private int enemiesToSpawn;  // Número de enemigos a spawnear
+    private Room room;  // Referencia a la habitaciÃ³n
 
     void Start()
     {
-        enemiesToSpawn = Random.Range(1, 6);  // Elige un número aleatorio entre 1 y 5 al inicio
+        enemiesToSpawn = Random.Range(1, 6);
         Debug.Log("Number of enemies to spawn: " + enemiesToSpawn);
+
+        // Encuentra la habitaciÃ³n mÃ¡s cercana o asigna la referencia de la habitaciÃ³n
+        room = FindObjectOfType<Room>();
     }
 
     void Update()
     {
-        // Detecta si el jugador está en el radio de detección
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
         bool playerDetected = false;
 
@@ -33,7 +36,7 @@ public class ActivadorSpawner : MonoBehaviour
                 isSpawning = true;
                 playerDetected = true;
                 Debug.Log("Player detected. Spawning enemies...");
-                break;  // Sale del bucle una vez que detecta al jugador
+                break;
             }
         }
 
@@ -42,15 +45,11 @@ public class ActivadorSpawner : MonoBehaviour
             Debug.Log("Player not detected within radius.");
         }
 
-        // Si el spawner está activado, empieza a generar enemigos
         if (isSpawning && enemiesToSpawn > 0)
         {
-            Debug.Log("Spawner is active, checking timer...");
-
             if (timer < timeBtwSpawn)
             {
                 timer += Time.deltaTime;
-                Debug.Log("Waiting for next spawn... Timer: " + timer);
             }
             else
             {
@@ -61,11 +60,16 @@ public class ActivadorSpawner : MonoBehaviour
 
                 int randomIndex = Random.Range(0, enemyPrefabs.Length);
 
-                Instantiate(enemyPrefabs[randomIndex], new Vector3(x, transform.position.y, z), Quaternion.identity);
+                GameObject enemy = Instantiate(enemyPrefabs[randomIndex], new Vector3(x, transform.position.y, z), Quaternion.identity);
                 Debug.Log("Spawned an enemy at position: " + new Vector3(x, transform.position.y, z));
 
-                enemiesToSpawn--;  // Disminuye el contador de enemigos a spawnear
+                enemiesToSpawn--;
                 Debug.Log("Remaining enemies to spawn: " + enemiesToSpawn);
+
+                if (room != null)
+                {
+                    room.enemiesInRoom++;  // Incrementa el contador de enemigos en la habitaciÃ³n
+                }
             }
         }
     }

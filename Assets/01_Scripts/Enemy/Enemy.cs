@@ -5,8 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float life = 2f;
-    public float detectionRange = 20f; // Rango de detección del jugador
-    public float rotationSpeed = 5f; // Velocidad de rotación
+    public float detectionRange = 20f; // Rango de detecciï¿½n del jugador
+    public float rotationSpeed = 5f; // Velocidad de rotaciï¿½n
     public float timeBtwShoot = 2.3f; // Tiempo entre disparos
     public Transform firePoint; // Punto desde donde se disparan las balas
     public GameObject bulletPrefab; // Prefab de la bala del enemigo
@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     private Transform player;
     private float shootTimer = 0f;
 
+    private Room room;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -31,17 +32,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Método para girar hacia el jugador
+    // Mï¿½todo para girar hacia el jugador
     void RotateTowardsPlayer()
     {
         Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0; // Asegurar que la dirección sea horizontal en el plano X-Z
+        directionToPlayer.y = 0; // Asegurar que la direcciï¿½n sea horizontal en el plano X-Z
 
         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-    // Método para disparar balas
+    // Mï¿½todo para disparar balas
     void Shoot()
     {
         shootTimer += Time.deltaTime;
@@ -68,7 +69,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Método para recibir daño
+    // Mï¿½todo para recibir daï¿½o
     public void TakeDamage(float damage)
     {
         life -= damage;
@@ -80,10 +81,16 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        if (room != null)
+        {
+            room.UpdateEnemyCount(true);  // Actualiza el contador de enemigos
+            Debug.Log("Enemy died, enemies in room: " + room.enemiesInRoom);
+        }
         Destroy(gameObject);
     }
 
-    // Detección de colisiones
+
+    // Detecciï¿½n de colisiones
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -93,7 +100,7 @@ public class Enemy : MonoBehaviour
             {
                 p.TakeDamage(1f);
             }
-            Destroy(gameObject);
+            Die();
         }
     }
 }

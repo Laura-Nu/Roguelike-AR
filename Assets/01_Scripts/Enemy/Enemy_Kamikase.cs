@@ -16,6 +16,7 @@ public class Enemy_Kamikase : MonoBehaviour
     private bool isChasing = false;
     private float currentSpeed;
 
+    private Room room;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -93,6 +94,12 @@ public class Enemy_Kamikase : MonoBehaviour
         if (explosionSound != null)
         {
             AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+        }
+
+        if (room != null)
+        {
+            room.UpdateEnemyCount(true);  // Actualiza el contador de enemigos
+            Debug.Log("Enemy died, enemies in room: " + room.enemiesInRoom);
         }
 
         Destroy(gameObject);

@@ -108,6 +108,23 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         }
     }
 
+    public void SetUIVisibility(bool isVisible)
+    {
+        itemImage.gameObject.SetActive(isVisible);
+        if (isVisible)
+        {
+            // Actualizar la información si es visible
+            UpdateInfo();
+        }
+        else
+        {
+            // Desactivar el resto de los componentes
+            itemCoinImg.gameObject.SetActive(false);
+            itemCountText.gameObject.SetActive(false);
+        }
+    }
+
+
     public void OnBeginDrag(PointerEventData eventData)
     {
     }

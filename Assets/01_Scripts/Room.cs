@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public bool killAllEnemies = false;
+    bool killAllEnemies = false;
+    public int enemiesInRoom = 0;  // Contador de enemigos en la habitación
 
     private void OnTriggerEnter(Collider other)
     {
@@ -47,10 +48,26 @@ public class Room : MonoBehaviour
         {
             if (door != null)
             {
-                // Hacer visible la puerta
+                // Hacer invisible la puerta
                 door.GetComponent<Collider>().enabled = false;
                 door.GetComponent<MeshRenderer>().enabled = false;
             }
+        }
+    }
+
+    public void UpdateEnemyCount(bool isEnemyDead)
+    {
+        if (isEnemyDead)
+        {
+            enemiesInRoom--;  // Decrementa el contador de enemigos si uno muere
+        }
+
+        // Cambia el estado del booleano si no hay más enemigos
+        if (enemiesInRoom <= 0)
+        {
+            killAllEnemies = true;
+            Debug.Log("All enemies are dead. killAllEnemies is now: " + killAllEnemies);
+            StartCoroutine(MakeDoorsInvisible());
         }
     }
 }

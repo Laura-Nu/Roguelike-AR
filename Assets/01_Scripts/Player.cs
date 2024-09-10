@@ -126,14 +126,16 @@ public class Player : MonoBehaviour
         float x = SimpleInput.GetAxis("Horizontal");
         float z = SimpleInput.GetAxis("Vertical");
 
-        bodyAnim.SetFloat("Speed", x);
         rb.velocity = new Vector3(x * speed, 0, z * speed);
+
+        bodyAnim.SetFloat("Speed", Mathf.Max(Mathf.Abs(x), Mathf.Abs(z)));
 
         if (x != 0 || z != 0)
         {
             body.rotation = Quaternion.LookRotation(rb.velocity);
         }
     }
+
 
     public void MainAttack()
     {
@@ -347,7 +349,7 @@ public class Player : MonoBehaviour
             // Incrementa la cantidad de monedas en 5
             AddCoins(20);
 
-            // Destruye el objeto de la moneda después de recogerlo
+            // Destruye el objeto de la moneda despuï¿½s de recogerlo
             Destroy(other.gameObject);
         }
     }
