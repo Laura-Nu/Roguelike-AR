@@ -11,6 +11,7 @@ TagManager:
   - Hall
   - Lobby
   - Door
+  - Moneda
   layers:
   - Default
   - TransparentFX
