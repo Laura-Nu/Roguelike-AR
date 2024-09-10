@@ -123,4 +123,13 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Trigger");
+        if (other.CompareTag("Room"))
+        {
+            Debug.Log("Room Encontrado");
+        }
+    }
 }
