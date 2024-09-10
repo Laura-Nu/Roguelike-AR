@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 767377035761103847}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.08493507, z: 0.15}
+  m_LocalPosition: {x: 0.1, y: 2.15, z: 0.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 2300195926182789489, guid: b76ade50ab763c7469a645a45ba759cb, type: 3}
   - {fileID: 1350343494128664723, guid: 701576434d9e9844180a01baf3d62045, type: 3}
   timeBtwSpawn: 1.5
+  enemiesToSpawn: 0
 --- !u!33 &5431430467862305211
 MeshFilter:
   m_ObjectHideFlags: 0
