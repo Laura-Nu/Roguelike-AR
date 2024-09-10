@@ -5,24 +5,21 @@ using UnityEngine;
 public class Enemy_Sniper : MonoBehaviour
 {
     public float life = 2f;
-    public float detectionRange = 20f;
-    public float rotationSpeed = 5f;
-    public float moveSpeed = 3f;
-    public float timeBtwShoot = 2.3f;
-    public Transform firePoint;
-    public GameObject bulletPrefab;
-    public float shootInterval = 0.1f;
-    public GameObject coinPrefab;
+    public float detectionRange = 20f; // Rango de detección del jugador
+    public float rotationSpeed = 5f; // Velocidad de rotación
+    public float moveSpeed = 3f; // Velocidad de movimiento del enemigo
+    public float timeBtwShoot = 2.3f; // Tiempo entre disparos
+    public Transform firePoint; // Punto desde donde se disparan las balas
+    public GameObject bulletPrefab; // Prefab de la bala del enemigo
+    public float shootInterval = 0.1f; // Intervalo entre disparos de balas
+    public GameObject coinPrefab; // Prefab de la moneda que se va a spawnear
 
     private Transform player;
     private float shootTimer = 0f;
-    private Room room;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        room = FindObjectOfType<Room>();
-        SeekHighGround();
     }
 
     void Update()
@@ -33,31 +30,31 @@ public class Enemy_Sniper : MonoBehaviour
         {
             RotateTowardsPlayer();
             MoveTowardsPlayer();
-            Shoot();
-        }
-        else if (distanceToPlayer > 30f)
-        {
-            detectionRange = 50f;
-            timeBtwShoot = 1.5f;
+            Shoot(); // Disparar hacia el jugador
         }
     }
 
+    // Método para girar hacia el jugador
     void RotateTowardsPlayer()
     {
         Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0;
+        directionToPlayer.y = 0; // Asegurar que la dirección sea horizontal en el plano X-Z
 
         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
+    // Método para mover hacia el jugador
     void MoveTowardsPlayer()
     {
         Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0;
+        directionToPlayer.y = 0; // Asegurar que el movimiento sea horizontal
+
+        // Mover al enemigo hacia el jugador
         transform.position += directionToPlayer.normalized * moveSpeed * Time.deltaTime;
     }
 
+    // Método para disparar balas
     void Shoot()
     {
         shootTimer += Time.deltaTime;
@@ -65,10 +62,13 @@ public class Enemy_Sniper : MonoBehaviour
         if (shootTimer >= timeBtwShoot)
         {
             shootTimer = 0f;
+
+            // Iniciar la corrutina para disparar 3 balas seguidas
             StartCoroutine(ShootMultipleBullets());
         }
     }
 
+    // Corrutina para disparar 3 balas seguidas
     IEnumerator ShootMultipleBullets()
     {
         for (int i = 0; i < 3; i++)
@@ -77,10 +77,11 @@ public class Enemy_Sniper : MonoBehaviour
             {
                 Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             }
-            yield return new WaitForSeconds(shootInterval);
+            yield return new WaitForSeconds(shootInterval); // Esperar antes de disparar la siguiente bala
         }
     }
 
+    // Método para recibir daño
     public void TakeDamage(float damage)
     {
         life -= damage;
@@ -91,33 +92,13 @@ public class Enemy_Sniper : MonoBehaviour
         }
     }
 
-    void SeekHighGround()
-    {
-        Vector3 highPoint = FindHighGround();
-        MoveTo(highPoint);
-    }
-
-    Vector3 FindHighGround()
-    {
-        // Lógica para encontrar el punto más alto (placeholder)
-        return Vector3.zero;
-    }
-
-    void MoveTo(Vector3 position)
-    {
-        transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
-    }
-
     void Die()
     {
-        if (room != null)
-        {
-            room.UpdateEnemyCount(true);
-            Debug.Log("Enemy Snipper died, updating room's enemy count.");
-        }
+        Debug.Log("El enemigo ha muerto."); // Mensaje al morir el enemigo
         Destroy(gameObject);
     }
 
+    // Detección de colisiones
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -128,8 +109,13 @@ public class Enemy_Sniper : MonoBehaviour
                 p.TakeDamage(1f);
             }
 
-            Instantiate(coinPrefab, transform.position, Quaternion.identity);
-            Die();
+            // Spawnear la moneda al colisionar con el jugador
+            if (coinPrefab != null)
+            {
+                Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            }
+
+            Destroy(gameObject); // Destruir el enemigo después de spawnear la moneda
         }
     }
 }
