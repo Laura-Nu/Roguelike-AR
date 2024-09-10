@@ -16,10 +16,11 @@ public class Enemy_Sniper : MonoBehaviour
 
     private Transform player;
     private float shootTimer = 0f;
-
+    private Room room;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        room = FindObjectOfType<Room>();
     }
 
     void Update()
@@ -94,7 +95,11 @@ public class Enemy_Sniper : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("El enemigo ha muerto."); // Mensaje al morir el enemigo
+        if (room != null)
+        {
+            room.UpdateEnemyCount();
+            Debug.Log("Enemy Snipper died, updating room's enemy count.");
+        }
         Destroy(gameObject);
     }
 
@@ -117,5 +122,11 @@ public class Enemy_Sniper : MonoBehaviour
 
             Destroy(gameObject); // Destruir el enemigo después de spawnear la moneda
         }
+    }
+
+    public void SetRoom(Room room)
+    {
+        this.room = room;  // Asigna la referencia del cuarto al enemigo
+        Debug.Log("Room assigned to enemy.");
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8258886791070076270}
   m_Layer: 0
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1134,8 +1134,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15.811861, y: 1, z: 15.663173}
-  m_Center: {x: -0.09775734, y: 0, z: 0.03442049}
+  m_Size: {x: 15.811861, y: 2.2982955, z: 15.663173}
+  m_Center: {x: -0.09775734, y: 0.6491479, z: 0.03442049}
 --- !u!1 &5374252394370288775
 GameObject:
   m_ObjectHideFlags: 0

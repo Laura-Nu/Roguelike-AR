@@ -13,16 +13,11 @@ public class ActivadorSpawner : MonoBehaviour
 
     private float timer = 0f;
     private bool isSpawning = false;
-    private Room room;  // Referencia a la habitación
 
     void Start()
     {
         enemiesToSpawn = Random.Range(1, 6);
         Debug.Log("Number of enemies to spawn: " + enemiesToSpawn);
-
-        // Encuentra la habitación más cercana o asigna la referencia de la habitación
-        room = FindObjectOfType<Room>();
-        room.enemiesInRoom = enemiesToSpawn;
     }
 
     void Update()
@@ -66,13 +61,13 @@ public class ActivadorSpawner : MonoBehaviour
 
                 enemiesToSpawn--;
                 Debug.Log("Remaining enemies to spawn: " + enemiesToSpawn);
-
-                if (room != null)
-                {
-                    room.enemiesInRoom++;  // Incrementa el contador de enemigos en la habitación
-                }
             }
         }
+    }
+
+    public int sendenemies()
+    {
+        return enemiesToSpawn;
     }
 
     void OnDrawGizmosSelected()

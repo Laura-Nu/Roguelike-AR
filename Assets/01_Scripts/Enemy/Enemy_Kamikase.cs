@@ -21,6 +21,7 @@ public class Enemy_Kamikase : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         currentSpeed = normalSpeed;
+        room = FindObjectOfType<Room>();
     }
 
     void Update()
@@ -101,10 +102,16 @@ public class Enemy_Kamikase : MonoBehaviour
 
         if (room != null)
         {
-            room.UpdateEnemyCount(true);
+            room.UpdateEnemyCount();
             Debug.Log("Enemy Kamikaze died, updating room's enemy count.");
         }
 
         Destroy(gameObject);
+    }
+
+    public void SetRoom(Room room)
+    {
+        this.room = room;  // Asigna la referencia del cuarto al enemigo
+        Debug.Log("Room assigned to enemy.");
     }
 }

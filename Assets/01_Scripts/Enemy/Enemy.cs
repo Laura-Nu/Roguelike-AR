@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        room = FindObjectOfType<Room>();
     }
 
     void Update()
@@ -105,7 +106,7 @@ public class Enemy : MonoBehaviour
     {
         if (room != null)
         {
-            room.UpdateEnemyCount(true);
+            room.UpdateEnemyCount();
             Debug.Log("Enemy died, updating room's enemy count.");
         }
         Destroy(gameObject);
@@ -124,12 +125,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void SetRoom(Room room)
     {
-        Debug.Log("Trigger");
-        if (other.CompareTag("Room"))
-        {
-            Debug.Log("Room Encontrado");
-        }
+        this.room = room;  // Asigna la referencia del cuarto al enemigo
+        Debug.Log("Room assigned to enemy.");
     }
 }
