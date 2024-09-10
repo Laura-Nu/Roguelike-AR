@@ -12,6 +12,7 @@ public class Enemy_Sniper : MonoBehaviour
     public Transform firePoint; // Punto desde donde se disparan las balas
     public GameObject bulletPrefab; // Prefab de la bala del enemigo
     public float shootInterval = 0.1f; // Intervalo entre disparos de balas
+    public GameObject coinPrefab; // Prefab de la moneda que se va a spawnear
 
     private Transform player;
     private float shootTimer = 0f;
@@ -86,12 +87,14 @@ public class Enemy_Sniper : MonoBehaviour
         life -= damage;
         if (life <= 0)
         {
+            Instantiate(coinPrefab, transform.position, Quaternion.identity);
             Die();
         }
     }
 
     void Die()
     {
+        Debug.Log("El enemigo ha muerto."); // Mensaje al morir el enemigo
         Destroy(gameObject);
     }
 
@@ -105,7 +108,14 @@ public class Enemy_Sniper : MonoBehaviour
             {
                 p.TakeDamage(1f);
             }
-            Destroy(gameObject);
+
+            // Spawnear la moneda al colisionar con el jugador
+            if (coinPrefab != null)
+            {
+                Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            }
+
+            Destroy(gameObject); // Destruir el enemigo después de spawnear la moneda
         }
     }
 }
